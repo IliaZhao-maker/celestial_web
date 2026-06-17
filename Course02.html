@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celestial Academy - Main Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 极致的深海午夜蓝基底 */
+        body { margin: 0; overflow: hidden; background-color: #0f172a; color: #fff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+        canvas { display: block; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
+        
+        #interaction-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; }
+
+        /* ---------------------------------------------------- */
+        /* 复古标签页 (Top-Right Tabs) */
+        /* ---------------------------------------------------- */
+        .top-nav-bar { 
+            position: absolute; top: 0; width: 100%; 
+            display: flex; justify-content: flex-end; align-items: flex-start; 
+            padding: 10px 0 0 0; box-sizing: border-box; 
+            z-index: 50; pointer-events: none; 
+        }
+        
+        .tabs-container { 
+            display: flex; background: #000; padding: 2px; gap: 2px; pointer-events: auto; 
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #top-nav-bar.pip-active .tabs-container {
+            transform: translateX(calc(-23vh + 42px));
+        }
+
+        .retro-tab { 
+            background-color: #fff; color: #000; 
+            padding: 4px 16px; cursor: pointer; transition: all 0.2s; 
+            font-weight: 700; font-size: 13px; text-transform: uppercase; 
+            clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%); 
+            display: flex; align-items: center; 
+            font-family: 'JetBrains Mono', monospace; letter-spacing: 1px;
+            border: 2px solid transparent;
+        }
+        .retro-tab:hover { background-color: #e5e7eb; }
+        .retro-tab.active-tab { background-color: #ff77aa; color: #fff; box-shadow: 0 0 10px rgba(255,119,170,0.4);}
+        .retro-tab span { transform: translateX(2px); }
+
+        /* 右上角画中画触发热区 */
+        #thumbnail-hitbox {
+            position: absolute;
+            right: -14px; 
+            top: calc(25px - 11.5vh); 
+            width: 23vh; 
+            height: 23vh;
+            border-radius: 50%;
+            z-index: 100;
+            cursor: pointer;
+            pointer-events: none;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            opacity: 0;
+            transform: scale(0.8);
+            transform-origin: center center;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #top-nav-bar.pip-active #thumbnail-hitbox {
+            pointer-events: auto;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ---------------------------------------------------- */
+        /* 极客复古底部工具栏 (Bottom Toolbar) */
+        /* ---------------------------------------------------- */
+        .bottom-tool-bar { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 32px; 
+            background: #000; color: #ff77aa; 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0 20px; box-sizing: border-box; font-size: 13px; 
+            z-index: 50; pointer-events: auto; font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
+        }
+        .tool-left { display: flex; gap: 30px; }
+        .tool-item { display: flex; align-items: center; gap: 6px; cursor: pointer; transition: color 0.2s; }
+        .tool-item:hover { color: #fff; }
+        .tool-icon { display: flex; align-items: center; margin-left: 4px; }
+
+        /* ---------------------------------------------------- */
+        /* UI 面板 (Sci-Fi 机甲视窗风) */
+        /* ---------------------------------------------------- */
+        .ui-layer {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 20;
+        }
+        .ui-hidden {
+            opacity: 0 !important; pointer-events: none !important;
+            transform: translateX(-20px);
+        }
+
+        #lab-ui-container {
+            position: absolute; top: 60px; left: 40px; 
+            width: 360px; z-index: 10; 
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            background: linear-gradient(135deg, #ff77aa 0%, #a855f7 100%);
+            padding: 2px; 
+            box-sizing: border-box;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #lab-ui { 
+            width: 100%;
+            clip-path: polygon(19px 0, 100% 0, 100% calc(100% - 19px), calc(100% - 19px) 100%, 0 100%, 0 19px);
+            background: 
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(255, 119, 170, 0.04) 3px,
+                    rgba(255, 119, 170, 0.04) 6px
+                ),
+                rgba(15, 20, 40, 0.92);
+            background-size: 200% 200%, 100% 100%;
+            animation: sci-fi-scan 15s linear infinite;
+            
+            backdrop-filter: blur(10px);
+            padding: 33px 28px; 
+            max-height: calc(100vh - 124px); 
+            overflow-y: auto; 
+            box-sizing: border-box;
+        }
+
+        @keyframes sci-fi-scan {
+            0% { background-position: 0% 0%, 0 0; }
+            100% { background-position: 100% 100%, 0 0; }
+        }
+        
+        #lab-ui::-webkit-scrollbar { width: 4px; }
+        #lab-ui::-webkit-scrollbar-thumb { background: #ff77aa; } 
+
+        .tagline { font-size: 11px; color: #44ccff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 8px; font-weight: bold;} 
+        h3 { margin: 0 0 15px 0; font-size: 26px; color: #ffffff; letter-spacing: 2px; font-weight: 900; text-shadow: 0 2px 10px rgba(255,119,170,0.5);}
+        p.desc { font-size: 13px; color: #b8c4d8; margin-bottom: 30px; line-height: 1.7; letter-spacing: 0.5px;}
+        
+        .progress-display { font-size: 54px; font-weight: bold; color: #ffffff; margin-bottom: 25px; letter-spacing: -2px; text-shadow: 0 4px 20px rgba(255,119,170,0.4);}
+        .progress-display span { font-size: 14px; color: #ff77aa; margin-left: 8px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold;}
+
+        .physics-panel { border-top: 1px dashed rgba(255, 119, 170, 0.3); border-bottom: 1px dashed rgba(255, 119, 170, 0.3); padding: 15px 0; margin-bottom: 25px;}
+        .phys-row { display: flex; justify-content: space-between; font-size: 11px; color: #b8c4d8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-family: 'JetBrains Mono', monospace;}
+        .phys-val { color: #ff77aa; font-weight: bold; text-shadow: 0 0 5px rgba(255,119,170,0.5); transition: color 0.3s;}
+
+        .btn-group { 
+            display: flex; flex-direction: column; gap: 8px; 
+            position: relative; 
+        }
+
+        .nav-btn { 
+            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); color: #cbd5e1;
+            padding: 14px 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: bold; letter-spacing: 0.5px;
+            text-align: left; cursor: pointer; transition: all 0.2s ease;
+            display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; 
+            border-radius: 0; 
+            box-shadow: none; 
+            white-space: nowrap; 
+        }
+        .nav-btn span:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .nav-btn span:last-child {
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        .nav-btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(255,119,170,0.15), transparent); transition: left 0.4s; }
+        .nav-btn:hover::before { left: 100%; }
+        .nav-btn:hover { border-color: rgba(255, 119, 170, 0.5); color: #fff; background: rgba(255, 119, 170, 0.05); transform: none; box-shadow: none;}
+        .nav-btn.active { background: rgba(255, 119, 170, 0.15); border-color: rgba(255, 119, 170, 0.6); color: #fff; border-left: 4px solid #ff77aa;}
+
+        /* ---------------------------------------------------- */
+        /* 视频数据面板 (Video Panel) - 更大更宽敞的居中自适应布局 */
+        /* ---------------------------------------------------- */
+        #video-panel-container {
+            position: absolute; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%);
+            width: 85vw; /* 大幅增加宽度，自适应屏幕 */
+            max-width: 1400px; /* 设定最大宽度限制 */
+            z-index: 100; 
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            background: linear-gradient(135deg, #ff77aa 0%, #a855f7 100%);
+            padding: 2px; box-sizing: border-box;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+        #video-panel-container.ui-hidden {
+            opacity: 0 !important; pointer-events: none !important;
+            transform: translate(-50%, -45%) scale(0.95);
+        }
+        #video-panel { 
+            width: 100%;
+            clip-path: polygon(19px 0, 100% 0, 100% calc(100% - 19px), calc(100% - 19px) 100%, 0 100%, 0 19px);
+            background: 
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(255, 119, 170, 0.04) 3px,
+                    rgba(255, 119, 170, 0.04) 6px
+                ),
+                rgba(15, 20, 40, 0.95);
+            background-size: 200% 200%, 100% 100%;
+            animation: sci-fi-scan 15s linear infinite;
+            backdrop-filter: blur(15px);
+            padding: 25px 35px 35px 35px; /* 调整内边距让内容更舒展 */
+            box-sizing: border-box;
+        }
+        .video-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;}
+        .close-video-btn { background: none; border: none; color: #ff77aa; font-size: 24px; cursor: pointer; transition: 0.3s; padding: 0; line-height: 1; }
+        .close-video-btn:hover { color: #fff; transform: scale(1.1) rotate(90deg); }
+        
+        .video-player-wrapper { 
+            width: 100%; 
+            aspect-ratio: 16 / 9; 
+            max-height: 70vh; /* 避免在宽屏设备上视频高度超出屏幕 */
+            background: #000; 
+            border: 1px solid rgba(255, 119, 170, 0.3); 
+            border-radius: 4px; 
+            overflow: hidden; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-player-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            outline: none;
+        }
+
+        /* 圆弧文字图层 */
+        #text-svg-layer {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 5; overflow: visible;
+            transition: opacity 0.4s ease;
+        }
+        .arc-text {
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: 900; 
+            paint-order: stroke fill;
+            stroke-linejoin: round;
+            transition: opacity 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- 包含标签与热区的顶部导航栏 -->
+    <div class="top-nav-bar" id="top-nav-bar">
+        <div class="tabs-container">
+            <div class="retro-tab" onclick="switchTopTab(this)"><span id="tab-1">引言</span></div>
+            <div class="retro-tab" onclick="switchTopTab(this)"><span id="tab-2">上一页</span></div>
+            <div class="retro-tab" onclick="switchTopTab(this)"><span id="tab-3">下一页</span></div>
+            <div class="retro-tab active-tab" onclick="switchTopTab(this)"><span id="tab-4">首页</span></div>
+        </div>
+        <div id="thumbnail-hitbox" onclick="toggleMini()" title="点击全屏观测"></div>
+    </div>
+
+    <canvas id="glcanvas"></canvas>
+    <div id="interaction-layer"></div>
+
+    <!-- 机甲风面板结构 -->
+    <div id="lab-ui-container" class="ui-layer">
+        <div id="lab-ui">
+            <div class="tagline" id="ui-tagline">CELESTIAL MECHANICS · 天体力学交互式推演</div>
+            <h3 id="ui-title">覆绛</h3>
+            <p class="desc" id="ui-desc">欢迎进入本交互式学习枢纽。课程将带您跨越人文与科学的边界，从蒙昧时代的血月神话、哥伦布的星象博弈，一路深入到现代天文学对朔望交点的严谨解析与大气折射的三维推演。</p>
+            
+            <div class="progress-display" id="perc-text">0.0<span>Phase</span></div>
+
+            <div class="physics-panel">
+                <div class="phys-row"><span id="lbl-synodic">当前课程进度:</span> <span class="phys-val" id="val-progress">系统待机</span></div>
+                <div class="phys-row"><span id="lbl-orbital">核心课题:</span> <span class="phys-val" id="val-subject">等待输入</span></div>
+                <div class="phys-row"><span id="lbl-atmo">教学模块:</span> <span class="phys-val" id="val-mode">全息阵列就绪</span></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="nav-btn" onclick="setProgress(0.25, this); event.stopPropagation();">
+                    <span id="mod-1-text">[ COURSE 01 ] 蒙昧时代的血月神话</span> <span>25%</span>
+                </button>
+                <button class="nav-btn" onclick="setProgress(0.50, this); event.stopPropagation();">
+                    <span id="mod-2-text">[ COURSE 02 ] 哥伦布的星象博弈</span> <span>50%</span>
+                </button>
+                <button class="nav-btn" onclick="setProgress(0.75, this); event.stopPropagation();">
+                    <span id="mod-3-text">[ COURSE 03 ] 可视化：不同月食的成因</span> <span>75%</span>
+                </button>
+                <button class="nav-btn" onclick="setProgress(1.0, this); event.stopPropagation();">
+                    <span id="mod-4-text">[ CORE ] 大气折射与本影推演</span> <span>100%</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部极客终端 -->
+    <div class="bottom-tool-bar">
+        <div class="tool-left">
+            <div class="tool-item" onclick="toggleMenuDrawer()">
+                <span id="menu-toggle-text">收起控制面板</span>
+                <span class="tool-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                        <rect x="0" y="0" width="4" height="4" opacity="0.3"/>
+                        <rect x="5" y="0" width="4" height="4" opacity="0.6"/>
+                        <rect x="10" y="0" width="4" height="4" opacity="1"/>
+                        <rect x="0" y="5" width="4" height="4" opacity="0.4"/>
+                        <rect x="5" y="5" width="4" height="4" opacity="0.7"/>
+                        <rect x="10" y="5" width="4" height="4" opacity="0.9"/>
+                        <rect x="0" y="10" width="4" height="4" opacity="0.5"/>
+                        <rect x="5" y="10" width="4" height="4" opacity="0.8"/>
+                        <rect x="10" y="10" width="4" height="4" opacity="1"/>
+                    </svg>
+                </span>
+            </div>
+            <div class="tool-item">
+                <span>Font Size</span>
+                <span style="font-weight: bold; font-size: 14px; margin-left: 4px; display: flex; align-items: flex-end; line-height: 1;">
+                    <span style="font-size: 10px;">A</span>A
+                </span>
+            </div>
+            <div class="tool-item">
+                <span id="lbl-ref">References</span>
+                <span class="tool-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                        <rect x="5" y="1" width="4" height="3" />
+                        <rect x="6.5" y="4" width="1" height="2" />
+                        <rect x="2" y="6" width="10" height="1" />
+                        <rect x="2" y="7" width="1" height="2" />
+                        <rect x="11" y="7" width="1" height="2" />
+                        <rect x="0" y="9" width="5" height="3" />
+                        <rect x="9" y="9" width="5" height="3" />
+                    </svg>
+                </span>
+            </div>
+        </div>
+        <div class="tool-item hover-link" onclick="toggleLanguage()" id="lang-btn" style="letter-spacing: 1px;">
+            ENGLISH
+        </div>
+    </div>
+    
+    <!-- 大尺寸本地视频数据面板 -->
+    <div id="video-panel-container" class="ui-hidden ui-layer">
+        <div id="video-panel">
+            <div class="video-header-row">
+                <div>
+                    <div class="tagline">ARCHIVE · 历史档案</div>
+                    <h3 style="font-size: 18px; margin: 5px 0 0 0; letter-spacing: 1px; text-shadow: none;">哥伦布的星象博弈 (1504)</h3>
+                </div>
+                <button class="close-video-btn" onclick="closeVideo()" title="关闭影像">✖</button>
+            </div>
+            <div class="video-player-wrapper">
+                <video id="columbus-video" controls>
+                    <!-- ★ 请将这里的 src 替换为您准备好的本地视频路径，例如 src="./assets/my_video.mp4" -->
+                    <source src="your_prepared_video.mp4" type="video/mp4">
+                    您的浏览器不支持 HTML5 视频播放，请升级浏览器。
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <svg id="text-svg-layer" class="ui-layer">
+        <defs><path id="invisible-arc" fill="none" d="" /></defs>
+        <text class="arc-text">
+            <textPath id="text-path-el" href="#invisible-arc" startOffset="50%" text-anchor="middle"></textPath>
+        </text>
+    </svg>
+
+    <script>
+        // ==========================================
+        // UI & 多语言逻辑
+        // ==========================================
+        let menuVisible = true;
+        let isThumbnail = false;
+        let autoMiniTriggered = true; 
+        let currentLang = 'zh';
+
+        const i18n = {
+            zh: {
+                tab1: "引言", tab2: "上一页", tab3: "下一页", tab4: "首页", langToggle: "ENGLISH",
+                hideConsole: "收起控制面板", showConsole: "展开控制面板", references: "References",
+                tagline: "CELESTIAL MECHANICS · 天体力学交互式推演",
+                mainTitle: "覆绛",
+                mainDesc: "欢迎进入本交互式学习枢纽。课程将带您跨越人文与科学的边界，从蒙昧时代的血月神话、哥伦布的星象博弈，一路深入到现代天文学对朔望交点的严谨解析与大气折射的三维推演。",
+                lblSynodic: "当前课程进度:", lblOrbital: "核心课题:", lblAtmo: "教学模块:",
+                mod1: "[ COURSE 01 ] 蒙昧时代的血月神话",
+                mod2: "[ COURSE 02 ] 哥伦布的星象博弈",
+                mod3: "[ COURSE 03 ] 可视化：不同月食的成因",
+                mod4: "[ CORE ] 大气折射与本影推演",
+                dynProg: ["PHASE 1 - 启蒙阶段", "PHASE 2 - 历史纪事", "PHASE 3 - 核心原理", "PHASE 4 - 深度进阶"],
+                dynSubj: ["神话与图腾传说", "航海时代的星象学", "全阶段月食可视化", "地球大气与光学折射"],
+                dynMode: ["历史档案阅读", "交互式叙事", "全息三维物理推演", "光学参数模拟"],
+                standbyProg: "系统待机", standbySubj: "等待输入", standbyMode: "全息阵列就绪"
+            },
+            en: {
+                tab1: "INTRO", tab2: "PREV", tab3: "NEXT", tab4: "HOME", langToggle: "中文",
+                hideConsole: "HIDE PANEL", showConsole: "SHOW PANEL", references: "REFERENCES",
+                tagline: "CELESTIAL MECHANICS",
+                mainTitle: "ALIGNMENT",
+                mainDesc: "Welcome to the interactive learning hub. This course bridges humanities and science, taking you from blood moon myths of the dark ages and Columbus's astrological gambit, to the rigorous analysis of syzygy nodes and 3D simulations of atmospheric refraction.",
+                lblSynodic: "COURSE PROGRESS:", lblOrbital: "CORE SUBJECT:", lblAtmo: "TEACHING MODE:",
+                mod1: "[ COURSE 01 ] MYTHS OF THE DARK AGES",
+                mod2: "[ COURSE 02 ] THE COLUMBUS GAMBIT",
+                mod3: "[ COURSE 03 ] VISUALIZING ECLIPSE CAUSES",
+                mod4: "[ CORE ] ATMOSPHERIC REFRACTION",
+                dynProg: ["PHASE 1 - INITIATION", "PHASE 2 - CHRONICLE", "PHASE 3 - CORE PRINCIPLES", "PHASE 4 - ADVANCED"],
+                dynSubj: ["MYTHS & TOTEMS", "ASTRONOMY IN NAVAL ERA", "ECLIPSE VISUALIZATION", "ATMOSPHERE & REFRACTION"],
+                dynMode: ["ARCHIVE READING", "INTERACTIVE NARRATIVE", "HOLOGRAPHIC 3D SIMULATION", "OPTICAL PARAMETER SIMULATION"],
+                standbyProg: "STANDBY", standbySubj: "AWAITING INPUT", standbyMode: "HOLO-ARRAY READY"
+            }
+        };
+
+        function updateLanguageUI() {
+            const dict = i18n[currentLang];
+            const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.innerHTML = txt; };
+            
+            setTxt('tab-1', dict.tab1); setTxt('tab-2', dict.tab2); setTxt('tab-3', dict.tab3); setTxt('tab-4', dict.tab4);
+            setTxt('menu-toggle-text', menuVisible ? dict.hideConsole : dict.showConsole);
+            setTxt('lbl-ref', dict.references); setTxt('lang-btn', dict.langToggle);
+            
+            setTxt('ui-tagline', dict.tagline);
+            setTxt('ui-title', dict.mainTitle);
+            setTxt('ui-desc', dict.mainDesc);
+            setTxt('lbl-synodic', dict.lblSynodic);
+            setTxt('lbl-orbital', dict.lblOrbital);
+            setTxt('lbl-atmo', dict.lblAtmo);
+
+            setTxt('mod-1-text', dict.mod1);
+            setTxt('mod-2-text', dict.mod2);
+            setTxt('mod-3-text', dict.mod3);
+            setTxt('mod-4-text', dict.mod4);
+        }
+
+        function toggleLanguage() { 
+            currentLang = currentLang === 'zh' ? 'en' : 'zh'; 
+            updateLanguageUI(); 
+            updateDynamicPanel(currentProgress);
+        }
+
+        function toggleMenuDrawer() {
+            const labUi = document.getElementById('lab-ui-container'); 
+            const svgLayer = document.getElementById('text-svg-layer');
+            menuVisible = !menuVisible;
+            if (menuVisible) {
+                labUi.classList.remove('ui-hidden');
+                if(!isThumbnail) svgLayer.style.opacity = '1';
+            } else {
+                labUi.classList.add('ui-hidden');
+                svgLayer.style.opacity = '0';
+            }
+            updateLanguageUI();
+        }
+
+        function switchTopTab(element) {
+            document.querySelectorAll('.retro-tab').forEach(tab => tab.classList.remove('active-tab'));
+            element.classList.add('active-tab');
+        }
+
+        function toggleMini() {
+            const topNavBar = document.getElementById('top-nav-bar');
+            const svgLayer = document.getElementById('text-svg-layer');
+            
+            isThumbnail = !isThumbnail;
+            
+            if(isThumbnail) {
+                topNavBar.classList.add('pip-active');
+                svgLayer.style.opacity = '0'; 
+            } else {
+                topNavBar.classList.remove('pip-active');
+                if(menuVisible) svgLayer.style.opacity = '1';
+                idleRotation = 0.0; 
+                autoMiniTriggered = true; 
+            }
+        }
+
+        window.setProgress = function(val, btn) {
+            targetProgress = val;
+            idleRotation = 0.0; 
+            autoMiniTriggered = false; 
+            
+            if (isThumbnail) toggleMini(); 
+            
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+
+            // 切换到任何模块时，都先确保收起视频面板
+            closeVideo();
+        }
+
+        // 视频面板控制逻辑
+        window.openVideo = function() {
+            const videoPanel = document.getElementById('video-panel-container');
+            const videoEl = document.getElementById('columbus-video');
+            videoPanel.classList.remove('ui-hidden');
+            if (videoEl) {
+                videoEl.currentTime = 0; // 打开时重置进度
+                videoEl.play().catch(e => console.log("浏览器限制了自动播放", e));
+            }
+            
+            // 自动隐藏主控制面板
+            if (menuVisible) {
+                toggleMenuDrawer();
+            }
+        }
+
+        window.closeVideo = function() {
+            const videoPanel = document.getElementById('video-panel-container');
+            const videoEl = document.getElementById('columbus-video');
+            if(!videoPanel.classList.contains('ui-hidden')) {
+                videoPanel.classList.add('ui-hidden');
+                if (videoEl) {
+                    videoEl.pause(); // 隐藏时暂停播放
+                }
+                
+                // 只有当视频面板真正从打开变为关闭时，才自动恢复主控制面板
+                if (!menuVisible) {
+                    toggleMenuDrawer();
+                }
+            }
+        }
+
+        function updateDynamicPanel(phase) {
+            let q = -1;
+            if (phase > 0.1) {
+                q = Math.max(0, Math.min(Math.floor((phase - 0.001) * 4.0), 3));
+            }
+
+            const dict = i18n[currentLang];
+            const vProg = document.getElementById('val-progress');
+            const vSubj = document.getElementById('val-subject');
+            const vMode = document.getElementById('val-mode');
+
+            if (!vProg || !vSubj || !vMode) return;
+
+            if (q === -1) {
+                vProg.innerHTML = dict.standbyProg;
+                vSubj.innerHTML = dict.standbySubj;
+                vMode.innerHTML = dict.standbyMode;
+                [vProg, vSubj, vMode].forEach(el => el.style.color = '#b8c4d8'); 
+            } else {
+                vProg.innerHTML = dict.dynProg[q];
+                vSubj.innerHTML = dict.dynSubj[q];
+                vMode.innerHTML = dict.dynMode[q];
+                [vProg, vSubj, vMode].forEach(el => el.style.color = '#ff77aa'); 
+            }
+        }
+
+        // ==========================================
+        // 核心 WebGL：动态跟随偏移系统
+        // ==========================================
+        const canvas = document.getElementById('glcanvas');
+        const gl = canvas.getContext('webgl', { alpha: false, antialias: true, depth: false });
+        if(!gl) alert("WebGL init failed");
+
+        const vsSource = `
+            attribute vec4 aVertexPosition;
+            void main() { gl_Position = aVertexPosition; }
+        `;
+
+        const fsSource = `
+            #extension GL_OES_standard_derivatives : enable
+            precision highp float;
+            
+            uniform vec3 iResolution;
+            uniform vec3 uCamParams; 
+            uniform float uProgress; 
+            uniform float uTime;
+
+            uniform vec2 uScreenOffset;
+            uniform float uCamZoom;
+            uniform float uIdleRotation;
+
+            #define MAX_DIST 150.
+            #define PI 3.1415926535
+            #define TAU 6.2831853
+
+            const float SEED = 0.0;
+            const vec3 SUN_DIR = normalize(vec3(-1.0, -0.2, 0.8)); 
+            
+            const vec3 SUN_COLOR = vec3(1.2, 0.5, 0.7);     
+            const vec3 LAND_COLOR = vec3(0.25, 0.5, 0.4);   
+            const vec3 JUNGLE_COLOR = vec3(0.15, 0.4, 0.3); 
+            const vec3 DESERT_COLOR = vec3(0.9, 0.75, 0.6); 
+            const vec3 SNOW_COLOR = vec3(1.0, 0.95, 0.95);  
+            const float OCEAN_SIZE = 0.57;
+            const vec3 OCEAN_COLOR = vec3(0.1, 0.5, 0.7);   
+            const vec3 CLOUD_COLOR = vec3(1.0, 0.9, 0.95);     
+
+            struct SdfCtx { float k; vec3 col; float d; };
+            float sdSphere(vec3 p, float r) { return length(p) - r; }
+
+            mat3 rotateY(float a) {
+                float c = cos(a), s = sin(a);
+                return mat3(c, 0.0, s, 0.0, 1.0, 0.0, -s, 0.0, c);
+            }
+
+            mat3 calcLookAtMatrix(vec3 camPos, vec3 at) {
+                vec3 zAxis = normalize(at - camPos);
+                vec3 xAxis = normalize(cross(zAxis, vec3(0.0, 1.0, 0.0)));
+                vec3 yAxis = normalize(cross(xAxis, zAxis));
+                return mat3(xAxis, yAxis, zAxis);
+            }
+
+            float hash12(vec2 p, float scale) {
+                p = mod(p, scale);
+                p.y += SEED;
+                return fract(sin(dot(p, vec2(12.9898, 4.1414))) * 43758.5453);
+            }
+
+            float noise(vec2 p, float scale) {
+                p *= scale;
+                vec2 f = fract(p);
+                p = floor(p);
+                return mix(mix(hash12(p, scale), hash12(p + vec2(1.0, 0.0), scale), f.x),
+                           mix(hash12(p + vec2(0.0, 1.0), scale), hash12(p + vec2(1.0, 1.0), scale), f.x), f.y);
+            }
+
+            float fbm4(vec2 p, float scale) {
+                float s = 0.0, m = 0.0, a = 1.0;
+                for(int i = 0; i < 4; i++) { s += a * noise(p, scale); m += a; a *= 0.6; scale *= 2.0; }
+                return s / m;
+            }
+
+            float fbm7(vec2 p, float scale) {
+                float s = 0.0, m = 0.0, a = 1.0;
+                for(int i = 0; i < 7; i++) { s += a * noise(p, scale); m += a; a *= 0.6; scale *= 2.0; }
+                return s / m;
+            }
+
+            float swirly_fbm6(vec2 p, float scale) {
+                p -= uTime * 0.003; 
+                float s = 0.0, m = 0.0, a = 1.0;
+                for(int i = 0; i < 6; i++) {
+                    s += a * noise(p + uTime * 0.003 * a, scale);
+                    m += a;
+                    a *= 0.6;
+                    scale *= 2.0;
+                    p += vec2(cos(s * TAU), sin(s * TAU)) / scale * 0.4;
+                }
+                return s / m;
+            }
+
+            vec2 hash22(vec2 p, float scale) {
+                p = mod(p, scale);
+                p.y += SEED;
+                vec3 p3 = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973));
+                p3 += dot(p3, p3.yzx + 33.33);
+                return fract((p3.xx + p3.yz) * p3.zy);
+            }
+
+            float crater_noise(vec2 p, float scale) {
+                p *= scale;
+                vec2 f = fract(p);
+                p = floor(p);
+                float va = 0.0;
+                float wt = 0.0;
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        vec2 g = vec2(float(i), float(j));
+                        vec2 o = hash22(p + g, scale);
+                        float d = distance(f - g, o);
+                        float w = exp(-4.0 * d);
+                        va += w * sin(TAU * sqrt(max(d, 0.06)));
+                        wt += w;
+                    }
+                }
+                return abs(va / wt);
+            }
+
+            float crater_fbm(vec2 x) {
+                float craters = crater_noise(x, 7.0) * 0.6 + crater_noise(x, 20.0) * 0.2;
+                return 1.0 - (craters + fbm4(x, 48.0) * 0.35) * 0.4;
+            }
+
+            SdfCtx mapSolids(vec3 p) {
+                SdfCtx res = SdfCtx(0.0, vec3(0.0), MAX_DIST);
+                float dEarth = sdSphere(p, 2.0);
+                if(dEarth < res.d) res = SdfCtx(1.0, vec3(0.0), dEarth); 
+
+                float curA = (uProgress + uIdleRotation) * 2.0 * PI;
+                vec3 mPos = vec3(cos(curA) * 6.25, 0.0, -sin(curA) * 6.25);
+                float dMoon = sdSphere(p - mPos, 0.35);
+                if(dMoon < res.d) res = SdfCtx(3.0, vec3(0.0), dMoon);
+
+                return res;
+            }
+
+            vec3 calcNormal(vec3 pos) {
+                vec2 e = vec2(0.005, 0.0); 
+                return normalize(vec3(
+                    mapSolids(pos + e.xyy).d - mapSolids(pos - e.xyy).d,
+                    mapSolids(pos + e.yxy).d - mapSolids(pos - e.yxy).d,
+                    mapSolids(pos + e.yyx).d - mapSolids(pos - e.yyx).d
+                ));
+            }
+
+            float getShadow(vec3 p, vec3 l) {
+                float b = dot(p, l);
+                float c = dot(p, p) - (2.0 * 2.0);
+                float h = b*b - c;
+                if(h > 0.0) {
+                    float t = -b - sqrt(h);
+                    if(t > 0.0) return 0.02; 
+                }
+                return 1.0;
+            }
+
+            vec3 calcAtmosphere(vec3 ro, vec3 rd, vec3 sunDir) {
+                float d = length(cross(ro, rd));
+                float atmoRadius = 2.45;
+                float earthRadius = 2.0;
+                
+                if(d > atmoRadius) return vec3(0.0);
+                
+                float distToClosest = dot(-ro, rd);
+                vec3 closestPoint = ro + rd * distToClosest;
+                float lClosest = length(closestPoint);
+                vec3 normCP = lClosest > 0.001 ? closestPoint / lClosest : vec3(0.0, 1.0, 0.0);
+                float sunDot = dot(normCP, sunDir);
+                
+                float sunIllumination = smoothstep(-0.2, 0.5, sunDot);
+                float density = smoothstep(atmoRadius, earthRadius, d);
+                float powDensity = pow(density, 2.5);
+                
+                vec3 color = vec3(0.2, 0.6, 1.0) * pow(density, 1.5) * sunIllumination * 1.5;
+                color += vec3(0.7, 0.9, 1.0) * pow(density, 8.0) * sunIllumination * 1.5;
+                
+                float terminatorGlow = smoothstep(-0.4, 0.2, sunDot) * smoothstep(0.4, -0.2, sunDot);
+                vec3 twilightColor = mix(vec3(0.9, 0.2, 0.6), vec3(1.0, 0.7, 0.2), smoothstep(-0.2, 0.2, sunDot));
+                color += twilightColor * terminatorGlow * powDensity * 4.0;
+                
+                float nightGlow = smoothstep(0.0, -1.0, sunDot);
+                color += vec3(0.05, 0.1, 0.3) * powDensity * nightGlow * 0.8;
+                
+                return color;
+            }
+
+            vec4 calcOrbitalRing(vec3 ro, vec3 rd, float t_solid) {
+                if (abs(rd.y) < 1e-4) return vec4(0.0);
+                float t_ring = -ro.y / rd.y;
+                
+                if (t_ring > 0.0 && t_ring < t_solid) {
+                    vec3 pRing = ro + rd * t_ring;
+                    float r = length(pRing.xz);
+                    
+                    if (r > 5.2 && r < 8.5) { 
+                        float a = atan(-pRing.z, pRing.x);
+                        if(a < 0.0) a += 2.0 * PI; 
+                        float targetAngle = uProgress * 2.0 * PI;
+
+                        float edgeFade = smoothstep(5.2, 5.5, r) * (1.0 - smoothstep(7.2, 7.5, r));
+                        vec3 ringCol = vec3(0.0);
+                        
+                        vec3 unfilledCol = vec3(0.1, 0.05, 0.3);
+                        ringCol += unfilledCol * edgeFade * 1.5;
+                        
+                        float mainTrack = 1.0 - smoothstep(0.0, 0.03, abs(r - 6.25));
+                        ringCol += vec3(0.3, 0.7, 1.0) * mainTrack * 1.0; 
+                        
+                        float m1 = smoothstep(0.015, 0.0, abs(a - PI * 0.5));
+                        float m2 = smoothstep(0.015, 0.0, abs(a - PI));
+                        float m3 = smoothstep(0.015, 0.0, abs(a - PI * 1.5));
+                        float m4 = smoothstep(0.015, 0.0, min(a, TAU - a)); 
+                        float markers = m1 + m2 + m3 + m4;
+                        ringCol += vec3(1.0, 0.8, 0.9) * markers * mainTrack * 6.0;
+
+                        float innerRipple = smoothstep(0.95, 1.0, cos(a * 29.53)) * (1.0 - smoothstep(0.0, 0.1, abs(r - 5.6)));
+                        ringCol += vec3(1.0, 0.4, 0.8) * innerRipple * 2.0;
+
+                        if (a <= targetAngle && uProgress > 0.001) {
+                            float headDist = abs(a - targetAngle);
+                            
+                            vec3 fillStart = vec3(1.0, 0.4, 0.7); 
+                            vec3 fillEnd   = vec3(0.4, 0.8, 1.0); 
+                            vec3 fillCol = mix(fillStart, fillEnd, a / (2.0 * PI));
+                            
+                            ringCol += fillCol * edgeFade * 2.5; 
+                            
+                            vec3 trackCol = mix(fillStart, fillEnd, a / (2.0 * PI));
+                            ringCol += trackCol * mainTrack * 3.0; 
+
+                            float cometGlow = exp(-10.0 * headDist) * exp(-12.0 * abs(r - 6.25));
+                            ringCol += vec3(1.0, 0.9, 1.0) * cometGlow * 15.0;
+                            
+                            float crossFlare = exp(-25.0 * abs(r - 6.25)) * exp(-2.0 * headDist);
+                            ringCol += vec3(1.0, 0.6, 0.8) * crossFlare * 5.0;
+                            
+                            ringCol += vec3(1.0, 0.5, 0.8) * innerRipple * (1.0 - headDist) * 3.0;
+                        }
+                        
+                        float alpha = edgeFade;
+
+                        float opticalDepth = clamp(0.22 / (abs(rd.y) + 0.01), 0.7, 4.5);
+                        return vec4(ringCol * opticalDepth, clamp(alpha, 0.0, 1.0));
+                    }
+                }
+                return vec4(0.0);
+            }
+
+            void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+                vec2 base_uv = (-iResolution.xy + 2.0 * fragCoord.xy) / iResolution.y;
+                
+                float theta = uCamParams.x, phi = uCamParams.y, radius = uCamParams.z;
+                vec3 ro = vec3(radius * sin(phi) * cos(theta), radius * cos(phi), radius * sin(phi) * sin(theta));
+                mat3 cam = calcLookAtMatrix(ro, vec3(0.0));
+                
+                vec2 bg_uv = base_uv - vec2(0.6, 0.0);
+                vec3 rd_bg = cam * normalize(vec3(bg_uv, 2.2));
+
+                vec3 skyTop = vec3(0.1, 0.15, 0.3);    
+                vec3 skyBottom = vec3(0.35, 0.2, 0.5);  
+                vec3 col = mix(skyBottom, skyTop, smoothstep(-0.4, 0.6, rd_bg.y));
+                
+                float stars = hash12(rd_bg.xy * 100.0, 1.0);
+                col += vec3(0.8, 0.9, 1.0) * smoothstep(0.99, 1.0, stars) * (1.0 - smoothstep(-0.2, 0.5, rd_bg.y));
+
+                float sunGlow = max(0.0, dot(rd_bg, SUN_DIR));
+                col += vec3(1.0, 0.8, 0.9) * pow(sunGlow, 800.0) * 3.0; 
+                col += vec3(1.0, 0.4, 0.7) * pow(sunGlow, 30.0) * 1.5;     
+                col += vec3(0.5, 0.1, 0.8) * pow(sunGlow, 10.0) * 0.5;
+
+                vec2 uv_obj = (base_uv - uScreenOffset) * uCamZoom;
+                vec3 rd_obj = cam * normalize(vec3(uv_obj, 2.2));
+                
+                float isPipMode = smoothstep(1.0, 2.5, uCamZoom);
+                float maskScale = mix(0.001, 10.0, isPipMode); 
+                float pipDist = length(base_uv - uScreenOffset) * maskScale;
+                float pipMask = 1.0 - smoothstep(2.0, 2.05, pipDist);
+
+                if (pipMask > 0.0) {
+                    col += calcAtmosphere(ro, rd_obj, SUN_DIR) * pipMask * (1.0 - isPipMode * 0.7);
+
+                    float t_solid = MAX_DIST, t = 0.0;
+                    SdfCtx ray;
+                    for(int i=0; i<80; i++) {
+                        ray = mapSolids(ro + rd_obj * t);
+                        if(ray.d < 0.001) { t_solid = t; break; }
+                        if(t > MAX_DIST) break;
+                        t += ray.d;
+                    }
+
+                    if (t_solid < MAX_DIST) {
+                        vec3 p = ro + rd_obj * t_solid, n = calcNormal(p), l = SUN_DIR;
+                        float diff = max(dot(n, l), 0.0), shadow = getShadow(p, l);
+                        vec3 objCol = vec3(0.0);
+                        
+                        if (ray.k == 1.0) { 
+                            vec3 normLocal = rotateY((uProgress + uIdleRotation) * 29.53 * 2.0 * PI) * n;
+                            vec2 muv = vec2(atan(normLocal.z, normLocal.x) * 0.5, acos(clamp(-normLocal.y, -1.0, 1.0))) / PI;
+                            
+                            float continent = fbm7(muv, 4.0);
+                            float temp = fbm4(muv * 3.0 + vec2(31.33), 1.0);
+                            float humid = fbm4(muv * 3.0 - vec2(54.1), 1.0);
+
+                            float sqrt_continent = sqrt(continent);
+                            float f = 0.01; 
+                            float land = smoothstep(f, 0.0, OCEAN_SIZE - continent);
+                            
+                            vec3 earthCol = LAND_COLOR;
+                            float desert = smoothstep(0.25, 0.1, humid);
+                            earthCol = mix(earthCol, DESERT_COLOR, desert);
+                            
+                            float jungle = smoothstep(0.1, 0.3, humid) * smoothstep(0.3, 0.4, temp);
+                            earthCol = mix(earthCol, JUNGLE_COLOR, jungle);
+                            
+                            float snow = smoothstep(0.3, 0.2, temp);
+                            earthCol = mix(earthCol, SNOW_COLOR, snow);
+                            
+                            earthCol *= sqrt_continent * land * 1.2 * smoothstep(1.0, 0.99, abs(normLocal.y));
+                            
+                            float ocean = smoothstep(OCEAN_SIZE, OCEAN_SIZE - f, continent);
+                            earthCol += (1.0 - continent) * ocean * OCEAN_COLOR;
+                            
+                            float texMix = sqrt(1.0 + 0.1 * cos(sqrt(continent) * 512.0));
+                            earthCol.rgb *= texMix;
+
+                            float clouds = swirly_fbm6(-muv, 11.0) * smoothstep(1.0, 0.99, abs(normLocal.y));
+                            clouds = exp(-pow(clouds, 6.0) * 32.0);
+                            float cloudSunDot = dot(n, l);
+                            vec3 cloudColorTint = mix(CLOUD_COLOR, vec3(1.0, 0.6, 0.5), smoothstep(-0.2, 0.2, cloudSunDot) * smoothstep(0.5, 0.1, cloudSunDot));
+                            earthCol = mix(earthCol, cloudColorTint, clouds);
+
+                            if (diff > 0.0) {
+                                objCol = earthCol * pow(diff, 0.7) * 3.0 * SUN_COLOR; 
+                            } else {
+                                float backLight = max(0.0, dot(n, vec3(-l.x, -l.y, -l.z))); 
+                                objCol = vec3(0.005, 0.01, 0.02) * earthCol * backLight;
+                                
+                                float cityLights = fbm4(normLocal.xy * 15.0 + 100.0, 10.0);
+                                float cityThreshold = smoothstep(0.75, 0.95, cityLights) * land; 
+                                col += mix(vec3(1.0, 0.8, 0.4), vec3(0.2, 0.9, 0.8), hash12(normLocal.xy, 10.0)) * cityThreshold * 3.0; 
+                            }
+
+                            float fresnel = 1.0 - max(dot(n, -rd_obj), 0.0);
+                            float innerSunDot = dot(n, l);
+                            float innerIllum = smoothstep(-0.4, 0.3, innerSunDot);
+                            float innerSunset = smoothstep(-0.5, 0.1, innerSunDot) * smoothstep(0.3, -0.2, innerSunDot);
+                            
+                            vec3 surfaceAtmo = mix(vec3(0.1, 0.5, 1.0), vec3(1.0, 0.2, 0.6), innerSunset * 1.5) * pow(fresnel, 3.0) * innerIllum;
+                            float nightFresnel = pow(fresnel, 5.0) * smoothstep(0.0, -0.8, innerSunDot);
+                            surfaceAtmo += vec3(0.05, 0.02, 0.1) * nightFresnel * 0.8;
+
+                            objCol += surfaceAtmo;
+                            
+                        } else if (ray.k == 3.0) { 
+                            float curPhase = mod(uProgress + uIdleRotation, 1.0);
+                            mat3 rotMoon = rotateY(curPhase * 2.0 * PI); vec3 normLocal = rotMoon * n;
+                            vec2 muv = vec2(atan(normLocal.z, normLocal.x) * 0.5, acos(clamp(-normLocal.y, -1.0, 1.0))) / PI;
+                            
+                            float eclipseFactor = smoothstep(0.48, 0.50, curPhase) * (1.0 - smoothstep(0.50, 0.52, curPhase));
+                            
+                            vec3 finalSunCol = mix(SUN_COLOR, vec3(1.0, 0.3, 0.5), eclipseFactor * 0.9); 
+                            float eclipseShadow = mix(shadow, 0.2, eclipseFactor * 0.8); 
+                            
+                            float craters_base = crater_fbm(muv) * 0.95; 
+                            objCol = craters_base * vec3(0.85, 0.88, 0.9) * pow(diff, 0.7) * eclipseShadow * 3.0 * finalSunCol; 
+                            objCol += craters_base * vec3(0.05, 0.02, 0.1) * max(0.0, dot(n, vec3(-l.x, -l.y, -l.z))) * 0.3 * (1.0 - shadow); 
+                        }
+                        col = mix(col, objCol, pipMask);
+                    } 
+
+                    vec4 ringData = calcOrbitalRing(ro, rd_obj, t_solid);
+                    col += ringData.rgb * ringData.a * pipMask; 
+                }
+
+                col = clamp(col, 0.0, 1.0);
+                col = col * (2.51 * col + 0.03) / (col * (2.43 * col + 0.59) + 0.14);
+                col = mix(col, col * vec3(0.95, 1.0, 1.05), 0.2);
+                
+                col += mix(-1.0/255.0, 1.0/255.0, fract(sin(dot(fragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453));
+                fragColor = vec4(col, 1.0);
+            }
+
+            void main() { 
+                vec4 c;
+                mainImage(c, gl_FragCoord.xy); 
+                gl_FragColor = c;
+            }
+        `;
+
+        function loadShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error("Shader Error:", gl.getShaderInfoLog(shader));
+            }
+            return shader;
+        }
+
+        const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+        const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+        const shaderProgram = gl.createProgram();
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+        gl.useProgram(shaderProgram);
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,1, -1,-1, 1,1, 1,-1]), gl.STATIC_DRAW);
+
+        const vertexPosition = gl.getAttribLocation(shaderProgram, 'aVertexPosition');
+        gl.enableVertexAttribArray(vertexPosition);
+        gl.vertexAttribPointer(vertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+        const locRes = gl.getUniformLocation(shaderProgram, "iResolution");
+        const locCam = gl.getUniformLocation(shaderProgram, "uCamParams");
+        const locProgress = gl.getUniformLocation(shaderProgram, "uProgress");
+        const locTime = gl.getUniformLocation(shaderProgram, "uTime");
+        const locOffset = gl.getUniformLocation(shaderProgram, "uScreenOffset");
+        const locZoom = gl.getUniformLocation(shaderProgram, "uCamZoom");
+        const locIdleRotation = gl.getUniformLocation(shaderProgram, "uIdleRotation");
+
+        let camTheta = Math.PI / 4.0, camPhi = Math.PI / 2.6, camRadius = 26.0; 
+        
+        const interactionLayer = document.getElementById('interaction-layer');
+        let isDragging = false, lastX = 0, lastY = 0;
+        interactionLayer.addEventListener('mousedown', (e) => { isDragging = true; lastX = e.clientX; lastY = e.clientY; });
+        interactionLayer.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                camTheta -= (e.clientX - lastX) * 0.005; camPhi -= (e.clientY - lastY) * 0.005;
+                camPhi = Math.max(0.05, Math.min(Math.PI / 2.0 - 0.05, camPhi));
+                lastX = e.clientX; lastY = e.clientY;
+            }
+        });
+        interactionLayer.addEventListener('mouseup', () => isDragging = false);
+        interactionLayer.addEventListener('wheel', (e) => {
+            camRadius = Math.max(12.0, Math.min(50.0, camRadius + e.deltaY * 0.02));
+        });
+
+        let currentProgress = 0.0, targetProgress = 0.0; 
+        let idleRotation = 0.0; 
+        const startTime = performance.now();
+        const percText = document.getElementById('perc-text');
+
+        let currentZoom = 1.0, currentOffsetX = 0.6, currentOffsetY = 0.0;
+
+        const cross = (a, b) => [a[1]*b[2] - a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1] - a[1]*b[0]];
+        const dot = (a, b) => a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
+        const normalize = v => { const len = Math.sqrt(dot(v,v)); return [v[0]/len, v[1]/len, v[2]/len]; };
+
+        function project3Dto2D(px, py, pz) {
+            const ro = [ camRadius*Math.sin(camPhi)*Math.cos(camTheta), camRadius*Math.cos(camPhi), camRadius*Math.sin(camPhi)*Math.sin(camTheta) ];
+            const cw = normalize([-ro[0], -ro[1], -ro[2]]);
+            const cp = [0, 1, 0];
+            const cu = normalize(cross(cw, cp));
+            const cv = normalize(cross(cu, cw));
+            const p = [px - ro[0], py - ro[1], pz - ro[2]];
+            
+            const camZ = dot(p, cw);
+            if (camZ <= 0.1) return null; 
+            
+            let uvX = dot(p, cu) / camZ * 2.2;
+            let uvY = dot(p, cv) / camZ * 2.2;
+            
+            uvX = uvX / currentZoom + currentOffsetX;
+            uvY = uvY / currentZoom + currentOffsetY;
+            
+            return { x: (uvX*canvas.height + canvas.width)/2.0, y: canvas.height - ((uvY*canvas.height + canvas.height)/2.0) };
+        }
+
+        const courseModules = [
+            { alert: false }, 
+            { alert: false },
+            { alert: true }, 
+            { alert: false }
+        ];
+
+        function updateTextArc(phase) {
+            const svgPath = document.getElementById('invisible-arc');
+            const textPath = document.getElementById('text-path-el');
+            const textEl = document.querySelector('.arc-text');
+            
+            if (phase <= 0.002 || isThumbnail) {
+                svgPath.setAttribute('d', ''); textPath.textContent = ''; return 0;
+            }
+
+            const q = Math.max(0, Math.min(Math.floor((phase - 0.001) * 4.0), 3));
+            const a_start = q * Math.PI * 0.5, a_end = (q + 1) * Math.PI * 0.5;
+            
+            let mTitle, mSub;
+            if (currentLang === 'zh') {
+                const zhArr = [ i18n.zh.mod1, i18n.zh.mod2, i18n.zh.mod3, i18n.zh.mod4 ];
+                const parts = zhArr[q].split('] ');
+                mTitle = parts[0] + ']'; mSub = parts[1];
+            } else {
+                const enArr = [ i18n.en.mod1, i18n.en.mod2, i18n.en.mod3, i18n.en.mod4 ];
+                const parts = enArr[q].split('] ');
+                mTitle = parts[0] + ']'; mSub = parts[1];
+            }
+
+            textPath.textContent = "✦ " + mTitle + " / " + mSub + " ✦"; 
+
+            if (courseModules[q].alert) {
+                textEl.setAttribute('fill', '#ffffff');
+                textEl.setAttribute('stroke', '#880044'); 
+                textEl.style.textShadow = '0 0 12px rgba(255, 119, 170, 0.9), 0 0 25px rgba(255, 255, 255, 0.8)';
+            } else {
+                textEl.setAttribute('fill', '#ffffff');
+                textEl.setAttribute('stroke', '#334155'); 
+                textEl.style.textShadow = '0 0 12px rgba(255, 255, 255, 0.5)';
+            }
+
+            let points = [];
+            const R_text = 8.25; 
+            for (let i = 0; i <= 40; i++) {
+                let a = a_start + (a_end - a_start) * (i / 40.0);
+                let px = R_text * Math.cos(a);
+                let pz = -R_text * Math.sin(a); 
+                let p2d = project3Dto2D(px, 0.0, pz);
+                if (p2d) points.push(p2d);
+            }
+            if (points.length < 2) { svgPath.setAttribute('d', ''); return 0; }
+            
+            if (points[0].x > points[points.length - 1].x) {
+                points.reverse();
+            }
+
+            let d = `M ${points[0].x} ${points[0].y}`;
+            let pathLen = 0;
+            
+            for (let i = 1; i < points.length; i++) {
+                d += ` L ${points[i].x} ${points[i].y}`;
+                let dx = points[i].x - points[i-1].x;
+                let dy = points[i].y - points[i-1].y;
+                pathLen += Math.sqrt(dx*dx + dy*dy);
+            }
+            svgPath.setAttribute('d', d);
+            
+            return pathLen;
+        }
+
+        function render(now) {
+            if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
+                canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            }
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            gl.clearColor(0, 0, 0, 1);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            let elapsed = (now - startTime) / 1000.0;
+            currentProgress += (targetProgress - currentProgress) * 0.05;
+            
+            if (Math.abs(targetProgress - currentProgress) < 0.001) {
+                currentProgress = targetProgress;
+            }
+            
+            let targetZoom = 1.0, targetOffsetX = 0.6, targetOffsetY = 0.0;
+            
+            if (isThumbnail) {
+                const hitbox = document.getElementById('thumbnail-hitbox');
+                const rect = hitbox.getBoundingClientRect();
+                
+                const pipX = rect.left + rect.width / 2;
+                const pipY = rect.top + rect.height / 2;
+                
+                targetOffsetX = (2.0 * pipX - canvas.width) / canvas.height;
+                targetOffsetY = -(2.0 * pipY - canvas.height) / canvas.height;
+                
+                targetZoom = (2.0 * canvas.height) / (rect.width * 1.38); 
+                idleRotation += 0.0005; 
+            }
+            
+            currentZoom += (targetZoom - currentZoom) * 0.06;
+            currentOffsetX += (targetOffsetX - currentOffsetX) * 0.06;
+            currentOffsetY += (targetOffsetY - currentOffsetY) * 0.06;
+
+            if (Math.abs(targetZoom - currentZoom) < 0.005) currentZoom = targetZoom;
+            if (Math.abs(targetOffsetX - currentOffsetX) < 0.005) currentOffsetX = targetOffsetX;
+            if (Math.abs(targetOffsetY - currentOffsetY) < 0.005) currentOffsetY = targetOffsetY;
+
+            percText.innerHTML = (currentProgress*100).toFixed(1) + "<span>Phase</span>";
+            
+            updateDynamicPanel(currentProgress);
+
+            let pathLen = updateTextArc(currentProgress);
+            const arcTextEl = document.querySelector('.arc-text');
+            
+            if (pathLen > 0 && !isThumbnail) {
+                const textStr = document.getElementById('text-path-el').textContent;
+                const charCount = textStr.length > 0 ? textStr.length : 20;
+                
+                let dynamicFontSize = Math.max(3, (pathLen / charCount) * 1.25); 
+                arcTextEl.style.fontSize = dynamicFontSize + 'px';
+                arcTextEl.style.letterSpacing = (dynamicFontSize * 0.15) + 'px';
+                arcTextEl.style.strokeWidth = Math.max(1, dynamicFontSize * 0.2) + 'px';
+                
+                arcTextEl.style.opacity = pathLen < 120 ? (pathLen / 120) : 1;
+            } else {
+                arcTextEl.style.opacity = 0;
+            }
+
+            if (!isThumbnail && !autoMiniTriggered && Math.abs(currentProgress - targetProgress) < 0.005) {
+                autoMiniTriggered = true; 
+                setTimeout(() => { 
+                    if (!isThumbnail && Math.abs(currentProgress - targetProgress) < 0.02) {
+                        toggleMini(); 
+                        
+                        // 动画飞到右上角后（等待约800ms的飞行过渡动画），如果是 Course 02 则自动弹开视频
+                        if (Math.abs(targetProgress - 0.50) < 0.01) {
+                            setTimeout(() => {
+                                if (isThumbnail && Math.abs(targetProgress - 0.50) < 0.01) {
+                                    openVideo();
+                                }
+                            }, 800);
+                        }
+                    }
+                }, 1200); 
+            }
+
+            gl.uniform3f(locRes, gl.canvas.width, gl.canvas.height, 1.0);
+            gl.uniform3f(locCam, camTheta, camPhi, camRadius);
+            
+            let safeShaderProgress = currentProgress > 0.0 ? Math.max(0.0, currentProgress - 0.001) : 0.0;
+
+            gl.uniform1f(locProgress, safeShaderProgress); 
+            gl.uniform1f(locTime, elapsed);
+            gl.uniform2f(locOffset, currentOffsetX, currentOffsetY);
+            gl.uniform1f(locZoom, currentZoom);
+            gl.uniform1f(locIdleRotation, idleRotation);
+
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            requestAnimationFrame(render);
+        }
+
+        updateLanguageUI();
+        requestAnimationFrame(render);
+    </script>
+</body>
+</html>

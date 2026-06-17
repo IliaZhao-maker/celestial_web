@@ -1,0 +1,9 @@
+{
+  "name": "moon-eclipse",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx http-server . -p 8000 -c-1",
+    "build": "node tools/build.js"
+  }
+}

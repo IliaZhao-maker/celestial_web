@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celestial Academy - Main Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css?v=20260603">
+</head>
+<body class="theme-course01">
+    
+    <!-- Course 03 - Subpage 0: 深度月偏食 (赛博都市) -->
+    <div id="course-03-scene">
+        <canvas id="cityCanvas"></canvas>
+        <div class="layout-container">
+            <div class="visual-panel">
+                <canvas id="moonCanvas"></canvas>
+                <div id="tracker">
+                    <div class="phase-label" id="phase-0">初亏</div>
+                    <div class="phase-label" id="phase-1">食甚</div>
+                    <div class="phase-label" id="phase-2">复原</div>
+                </div>
+            </div>
+            <div class="text-panel">
+                <h1>深度月偏食：透光的残骸</h1>
+                <p>当城市沉入静谧，日月地三者发生了一次并不完美的重叠。地球投下的深邃暗影，造就了这场罕见的<strong>深度月偏食 (Deep Partial Lunar Eclipse)</strong>。</p>
+                <p>由于轨道存在微弱的垂直偏移，月球并未被彻底吞没。即使在核心的<strong>食甚</strong>阶段，其底部依旧保留着一弯锋利且耀眼的月牙。</p>
+                <p>真正的奇迹在于暗影之中。地球大气层如同一面巨型透镜，滤去短波光，将星云紫光折射至月表。交错的月岩由此呈现出<span class="highlight">晶莹剔透的丁香紫透光质感</span>，宛如悬浮的巨大生命体。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 03 - Subpage 1: 极深半影月食 (跨海大桥) -->
+    <div id="subpage-penumbral-scene">
+        <canvas id="bridgeCanvas"></canvas>
+        <div class="layout-container">
+            <div class="visual-panel">
+                <canvas id="penumbralMoonCanvas"></canvas>
+                <div id="tracker-penumbral">
+                    <div class="phase-label" id="c4-phase-0">半影始</div>
+                    <div class="phase-label" id="c4-phase-1">食甚</div>
+                    <div class="phase-label" id="c4-phase-2">半影终</div>
+                </div>
+            </div>
+            <div class="text-panel">
+                <h1>半影掩月：极寒的灰弧</h1>
+                <p>半影月食发生时，地球深邃的本影未能捕获月球，月球仅仅是陷入了外围较亮的<strong>半影区 (Penumbra)</strong> 中。</p>
+                <p>由于轨道存在垂直偏移，月球避开了绝对黑暗的本影锥。在<strong>食甚</strong>阶段，它不会被完全吞噬，更不会折射出任何猩红的血色，而是呈现出一种极度克制的衰减。</p>
+                <p>此时的月表，底部的边缘反光被无情剥夺，蒙上了一层极其厚重、冰冷的<span class="highlight">深灰色阴霾</span>。这场黯淡的天体交汇，展现了宇宙几何的冷酷与精准。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 03 - Subpage 2: 全影吞噬 (血月) -->
+    <div id="subpage-total-scene">
+        <canvas id="totalCityCanvas"></canvas>
+        <div class="layout-container">
+            <div class="visual-panel">
+                <canvas id="totalMoonCanvas"></canvas>
+                <div id="tracker-total">
+                    <div class="phase-label" id="c3-3-phase-0">初亏</div>
+                    <div class="phase-label" id="c3-3-phase-1">食甚</div>
+                    <div class="phase-label" id="c3-3-phase-2">复原</div>
+                </div>
+            </div>
+            <div class="text-panel">
+                <h1>全影吞噬：血月</h1>
+                <p>当日月地三者发生完美的直线重叠，一场极致的天文共振降临。地球巨大的本影将从正中心穿过，造就这场罕见的<strong>月全食</strong>。</p>
+                <p>随着推演进入核心的<strong>食甚</strong>阶段，耀眼的月牙将被彻底剥夺，整颗月球没入无边的黑暗之中。</p>
+                <p>然而，地球大气层如同一面巨型透镜，将折射的红光投射至月表。死寂的月岩蜕变为<span class="highlight">凝固浆液般的古铜色透光质感</span>，化作悬浮于都市上空的巨大猩红晶体。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主控 3D 天体轨道仪 -->
+    <canvas id="glcanvas"></canvas>
+    <div id="interaction-layer"></div>
+
+    <!-- Course 01 Subpage: Prologue (神话序幕) -->
+    <div id="prologue-layer">
+        <canvas id="prologue-canvas"></canvas>
+        <div id="myth-panel-1" class="myth-panel">
+            <div class="myth-tag">LEGEND I / 古代东方</div>
+            <h2 class="myth-title">天狗食月</h2>
+            <p class="myth-p">在古老的东方，人们仰望逐渐被黑暗吞噬、泛出诡异暗红的满月，惊恐地敲响铜锣。他们深信，是贪婪的<span class="myth-highlight">「天狗」</span>正在啃食这轮皎洁的玉盘，必须用巨响将其驱赶。</p>
+        </div>
+        <div id="myth-panel-2" class="myth-panel">
+            <div class="myth-tag">LEGEND II / 维京与印加</div>
+            <h2 class="myth-title">巨兽的袭击</h2>
+            <p class="myth-p">维京人握紧了手中的利剑，传说中常年追逐月亮的巨狼<span class="myth-highlight">哈提（Hati）</span>终于张开了獠牙；而在南美洲的印加帝国，信徒们哀嚎着，认为是一只巨大的美洲豹袭击了月神，那暗红的色泽便是月神洒落的鲜血。</p>
+        </div>
+        <div id="myth-panel-3" class="myth-panel">
+            <div class="myth-tag">LEGEND III / 北美原住民</div>
+            <h2 class="myth-title">月亮的病痛</h2>
+            <p class="myth-p">北美加州的<span class="myth-highlight">胡帕族（Hupa）</span>认为月亮有很多宠物。如果没喂饱它们，山狮和蛇就会攻击月亮导致其流血，而月亮的妻子们会赶来治愈他。鲁伊谢纽族则认为月亮生病了，族人必须进行吟唱和祈祷，帮助月亮康复。</p>
+        </div>
+        <div id="myth-panel-4" class="myth-panel">
+            <div class="myth-tag">LEGEND IV / 西非部落</div>
+            <h2 class="myth-title">日与月的争吵</h2>
+            <p class="myth-p">在西非的<span class="myth-highlight">巴坦马利巴族（Batammaliba）</span>传说中，月食是因为太阳和月亮在打架。有趣的是，人们将此视为化解矛盾的契机——通过在地上停止纷争、重归于好，来劝说天上的日月停止争吵。</p>
+        </div>
+        <div id="myth-panel-5" class="myth-panel">
+            <div class="myth-tag">EPILOGUE / 序幕终曲</div>
+            <h2 class="myth-title">月之本相</h2>
+            <p class="myth-p">当战鼓与祈祷声在时间的走廊中渐渐平息，先民们对未知的恐惧终于散去。这抹悬浮在钢铁森林上空的暗红，并非神罚的印记，而是光线穿透地球大气层时，留下的极致浪漫。</p>
+            <p class="myth-p">现在，让我们越过神话的迷雾，亲自去探寻这场跨越三十八万公里的<span class="myth-highlight">宇宙级视错觉</span>。去看看那些被隐藏在引力与折射背后的真实细节……</p>
+        </div>
+    </div>
+
+    <!-- Course 02 Subpage: 视频弹窗 -->
+    <div id="video-panel-container">
+        <div id="video-panel">
+            <div class="video-header-row">
+                <div>
+                    <div class="tagline">ARCHIVE · 历史档案</div>
+                    <h3 style="font-size: 18px; margin: 5px 0 0 0; letter-spacing: 1px; text-shadow: none;">哥伦布的星象博弈 (1504)</h3>
+                </div>
+                <button class="close-video-btn" onclick="closeVideo()" title="关闭影像">✖</button>
+            </div>
+            <div class="video-player-wrapper">
+                <video id="columbus-video" controls>
+                    <source src="X_动画.mp4" type="video/mp4">
+                    您的浏览器不支持 HTML5 视频播放。
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- 顶部导航栏 -->
+    <div class="top-nav-bar" id="top-nav-bar">
+        <div class="tabs-container">
+            <div class="retro-tab" onclick="switchTopTab(this, 'intro')"><span id="tab-1">引言</span></div>
+            <div class="retro-tab" onclick="switchTopTab(this, 'prev')"><span id="tab-2">上一页</span></div>
+            <div class="retro-tab" onclick="switchTopTab(this, 'next')"><span id="tab-3">下一页</span></div>
+            <div class="retro-tab active-tab" onclick="switchTopTab(this, 'home')"><span id="tab-4">首页</span></div>
+        </div>
+        <div id="thumbnail-hitbox" onclick="toggleMini()" title="点击全屏观测"></div>
+    </div>
+
+    <!-- 机甲风主控面板 -->
+    <div id="lab-ui-container" class="ui-layer">
+        <div id="lab-ui">
+            <div class="tagline" id="ui-tagline">CELESTIAL MECHANICS · 天体力学交互式推演</div>
+            <h3 id="ui-title">覆绛</h3>
+            <p class="desc" id="ui-desc">欢迎进入本交互式学习枢纽。课程将带您跨越人文与科学的边界，从蒙昧时代的血月神话、哥伦布的星象博弈，一路深入到现代天文学对朔望交点的严谨解析与大气折射的三维推演。</p>
+            
+            <div class="progress-display" id="perc-text">0.0<span>Phase</span></div>
+
+            <div class="physics-panel">
+                <div class="phys-row"><span id="lbl-synodic">当前课程进度:</span> <span class="phys-val" id="val-progress">系统待机</span></div>
+                <div class="phys-row"><span id="lbl-orbital">核心课题:</span> <span class="phys-val" id="val-subject">等待输入</span></div>
+                <div class="phys-row"><span id="lbl-atmo">教学模块:</span> <span class="phys-val" id="val-mode">全息阵列就绪</span></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="nav-btn" onclick="setProgress(0.25, this); event.stopPropagation();">
+                    <span id="mod-1-text">[ COURSE 01 ] 蒙昧时代的血月神话</span> <span>25%</span>
+                </button>
+                <button class="nav-btn" onclick="setProgress(0.50, this); event.stopPropagation();">
+                    <span id="mod-2-text">[ COURSE 02 ] 哥伦布的星象博弈</span> <span>50%</span>
+                </button>
+                <button class="nav-btn" onclick="setProgress(0.75, this); event.stopPropagation();">
+                    <span id="mod-3-text">[ COURSE 03 ] 可视化：不同月食的成因</span> <span>75%</span>
+                </button>
+                <button class="nav-btn" onclick="setProgress(1.0, this); event.stopPropagation();">
+                    <span id="mod-4-text">[ CORE ] 大气折射与本影推演</span> <span>100%</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部极客终端 -->
+    <div class="bottom-tool-bar">
+        <div class="tool-left">
+            <div class="tool-item" onclick="toggleMenuDrawer()">
+                <span id="menu-toggle-text">收起控制面板</span>
+                <span class="tool-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                        <rect x="0" y="0" width="4" height="4" opacity="0.3"/>
+                        <rect x="5" y="0" width="4" height="4" opacity="0.6"/>
+                        <rect x="10" y="0" width="4" height="4" opacity="1"/>
+                        <rect x="0" y="5" width="4" height="4" opacity="0.4"/>
+                        <rect x="5" y="5" width="4" height="4" opacity="0.7"/>
+                        <rect x="10" y="5" width="4" height="4" opacity="0.9"/>
+                        <rect x="0" y="10" width="4" height="4" opacity="0.5"/>
+                        <rect x="5" y="10" width="4" height="4" opacity="0.8"/>
+                        <rect x="10" y="10" width="4" height="4" opacity="1"/>
+                    </svg>
+                </span>
+            </div>
+            <div class="tool-item">
+                <span>Font Size</span>
+                <span style="font-weight: bold; font-size: 14px; margin-left: 4px; display: flex; align-items: flex-end; line-height: 1;">
+                    <span style="font-size: 10px;">A</span>A
+                </span>
+            </div>
+            <div class="tool-item">
+                <span id="lbl-ref">References</span>
+                <span class="tool-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                        <rect x="5" y="1" width="4" height="3" />
+                        <rect x="6.5" y="4" width="1" height="2" />
+                        <rect x="2" y="6" width="10" height="1" />
+                        <rect x="2" y="7" width="1" height="2" />
+                        <rect x="11" y="7" width="1" height="2" />
+                        <rect x="0" y="9" width="5" height="3" />
+                        <rect x="9" y="9" width="5" height="3" />
+                    </svg>
+                </span>
+            </div>
+        </div>
+        <div class="tool-item hover-link" onclick="toggleLanguage()" id="lang-btn" style="letter-spacing: 1px;">
+            ENGLISH
+        </div>
+    </div>
+    
+    <!-- CORE Subpage 0: 日心视角多维观测站 -->
+    <div id="core-subpage-0" class="core-subpage inactive">
+        <div class="film-grain"></div>
+        <div class="fly-container">
+            <div class="fly-icon">🛰️</div>
+            <div class="fly-tooltip" id="core0-fly-tip">【观测视角：NASA Lucy 探测器】2022年5月，Lucy 探测器在距地球 1 亿公里（约日地距离的 70%）的深空独特视角，使用 L'LORRI 高分辨率相机，凝视并记录了地球阴影投射在月球上的月全食全过程。</div>
+        </div>
+        <div id="core0-lab-ui" class="core-ui-layer">
+            <h3 id="core0-ui-title">多维观测系统</h3>
+            <p id="core0-ui-desc" style="font-size: 12px; color: #ccbbcc; margin-bottom: 20px; line-height: 1.5;">
+                在此终端中，您可以同时从「日心宏观视角」与右下角的「地球观测者视角」审视地月系的运转。<br>拖动时间流，观察带有等离子能量流苏尾迹的真·体积光轨道，以及精致的素描陨石坑地貌。
+            </p>
+            <div class="control-group">
+                <div class="control-header" id="core0-lbl-time-header">系统全局时间流 (物理锁定)</div>
+                <label><input type="radio" name="core0-playMode" id="core0-modeAuto" checked> <span id="core0-lbl-auto">自动推演 (0.1x 舒缓模式)</span></label>
+                <label><input type="radio" name="core0-playMode" id="core0-modeManual"> <span id="core0-lbl-manual">手动拖拽 (干预全局时间轴)</span></label>
+                <input type="range" id="core0-timeSlider" min="0" max="365" step="0.1" value="0">
+                <div class="sub-text" id="core0-lbl-time-sub">* 滑块代表地球公转的 0~365 天。</div>
+            </div>
+            <div class="control-group" style="margin-top: 20px;">
+                <div class="control-header" id="core0-lbl-space-header">空间动力学参数</div>
+                <label><input type="radio" name="core0-tilt" value="0.0897" checked> <span id="core0-lbl-real">真实倾角 (5.14°) - 月球沿真实黄白交角运行</span></label>
+                <label><input type="radio" name="core0-tilt" value="0.0"> <span class="highlight" id="core0-lbl-flat">理想共面 (0.00°) - 用于演示绝对食分现象</span></label>
+                <button class="btn-eclipse" onclick="MoonApp.CoreSubpages.triggerEclipse()" id="core0-btn-eclipse">[ 快速定位至月食发生点 ]</button>
+            </div>
+        </div>
+        <div id="core0-pip-label">● REC | 地球观测者视角</div>
+        <div id="core0-interaction-layer"></div>
+        <canvas id="glcanvas-core-01"></canvas>
+    </div>
+
+    <!-- CORE Subpage 1: 全食透镜与血月显影 -->
+    <div id="core-subpage-1" class="core-subpage inactive">
+        <div class="film-grain"></div>
+        <div id="core1-lab-ui">
+            <h3 id="core1-ui-title">全食透镜与血月显影</h3>
+            <p class="desc" id="core1-ui-desc"><b>为什么月球会在全食阶段突然变成血红色？</b><br>当月球完全进入地球本影时，直射阳光被物理切断。但此时地球外围的<b>大气层就像一个巨大的透镜</b>：它将短波蓝光向外散射，同时将<b>波长较长的红光向内折射（弯曲）</b>进本影区，重新点亮月表。<br>拖动下方滑块观察：当大气中充满<b>火山灰等气溶胶</b>时，这道仅存的红光也会被绞杀，导致折射光锥坍塌，血月彻底变为死黑。</p>
+            <div class="mode-toggle">
+                <div class="mode-btn active" id="core1-btn-eye" onclick="document.getElementById('core1-btn-eye').classList.add('active');document.getElementById('core1-btn-phys').classList.remove('active');MoonApp.CoreSubpages.setMode('eye')">人眼视效 (OPTICAL EYE)</div>
+                <div class="mode-btn" id="core1-btn-phys" onclick="document.getElementById('core1-btn-phys').classList.add('active');document.getElementById('core1-btn-eye').classList.remove('active');MoonApp.CoreSubpages.setMode('physics')">物理直出 (RAW PHYSICS)</div>
+            </div>
+            <div class="control-group">
+                <div class="control-header"><span id="core1-lbl-phase">月食轨道进度 (ORBITAL PHASE)</span><span class="val-highlight" id="core1-ui-progress">0%</span></div>
+                <input type="range" id="core1-moon-slider" min="-200" max="200" step="0.5" value="0">
+            </div>
+            <div class="control-group" style="border-color: rgba(255,42,75,0.4);">
+                <div class="control-header"><span id="core1-lbl-aero">大气火山灰浓度 (AEROSOL DENSITY)</span><span class="val-highlight" style="color:#ff4d6d;" id="core1-ui-aerosol">5%</span></div>
+                <input type="range" class="danger" id="core1-aerosol-slider" min="0" max="100" step="1" value="5">
+            </div>
+            <div class="terminal-box">
+                <div class="term-title" id="core1-danjon-title">月食亮度评级：L=4 (明亮血月)</div>
+                <div class="term-log" id="core1-danjon-desc"><i>*注：L为丹戎光度表(Danjon Scale)，专门用于衡量月食时的亮度与黑暗程度，L=4代表最亮。</i><br>大气极度纯净，长波红光穿透率极高，向内弯曲的深红折射光锥能量充沛，全食阶段极为耀眼。</div>
+            </div>
+            <div class="terminal-box" style="margin-bottom: 0; border-left-color: #ff2a4b;">
+                <div class="term-title" id="core1-term-status-title" style="color: #ff2a4b;">当前状态：完美血月 (TOTALITY)</div>
+                <div class="term-log" id="core1-term-status-desc">全食阶段，白光彻底剥离！经过地球大气层折射弯曲的<b>长波红光</b>成为绝对主导光源，血月显影。</div>
+            </div>
+        </div>
+        <canvas id="sim-canvas-core"></canvas>
+    </div>
+
+    <!-- CORE Subpage 2: 黄白交角演示器 -->
+    <div id="core-subpage-2" class="core-subpage inactive">
+        <div id="core2-lab-ui" class="core-ui-layer">
+            <h3 id="core2-ui-title">黄白交角与月食的捉迷藏</h3>
+            <p class="desc" id="core2-ui-desc"><b>为什么月食不是每个月都有？</b><br>这源于地球公转轨道面（黄道面）与月球公转轨道面（白道面）之间存在的夹角——<b>黄白交角</b>。<br>为直观展示，本系统将夹角视效放大至 15°，并实体化了地月阴影锥。转动视角你会发现，在大多数时候，月球会从巨大的深红阴影上方或下方"完美错过"（如阶段二）。只有当轨道交点恰好对齐时，月食才会真正降临。</p>
+            <div class="progress-display" id="core2-perc-text">假设模型</div>
+            <div class="physics-panel">
+                <div class="phys-row"><span id="core2-lbl-ecl">黄道面 (基准):</span><span class="phys-val gold" id="core2-val-ecl-base">0.00° (归零)</span></div>
+                <div class="phys-row"><span id="core2-lbl-lun">白道面倾角:</span><span class="phys-val silver" id="core2-val-lun">0.00°</span></div>
+                <div class="phys-row"><span id="core2-lbl-node">交点退行:</span><span class="phys-val highlight" id="core2-val-node">0.0 YRS (-0天)</span></div>
+            </div>
+            <div class="btn-group">
+                <button class="nav-btn active" onclick="MoonApp.CoreSubpages.setProgress(0.0, this);"><span id="core2-btn-text-1">[ 假设 ] 零度交角：每月必穿红影锥</span><span class="status-tag">THEORY</span></button>
+                <button class="nav-btn" onclick="MoonApp.CoreSubpages.setProgress(0.33, this);"><span id="core2-btn-text-2">[ 现实 ] 轨道倾斜：月球完美错过阴影</span><span class="status-tag" style="color:#ff2a4b;">REALITY</span></button>
+                <button class="nav-btn" onclick="MoonApp.CoreSubpages.setProgress(0.66, this);"><span id="core2-btn-text-3">[ 交汇 ] 节点对齐：真实月食的触发带</span><span class="status-tag" style="color:#ffcc44;">ALIGNMENT</span></button>
+                <button class="nav-btn" onclick="MoonApp.CoreSubpages.setProgress(1.0, this);"><span id="core2-btn-text-4">[ 退行 ] 轨道漂移：18.6年的进动周期</span><span class="status-tag" style="color:#ff4d6d;">REGRESSION</span></button>
+            </div>
+        </div>
+        <div id="core2-interaction-layer"></div>
+        <canvas id="glcanvas-core-03"></canvas>
+        <svg id="core2-text-svg-layer" class="core-ui-layer">
+            <defs><path id="core2-invisible-arc" fill="none" d="" /><path id="core2-ecliptic-arc" fill="none" d="" /></defs>
+            <g id="core2-protractor-layer" style="opacity: 0; transition: opacity 0.3s ease;">
+                <polygon id="core2-pro-sector" fill="rgba(255, 77, 109, 0.15)" stroke="none" />
+                <line id="core2-pro-line-drop" stroke="#ff4d6d" stroke-width="1.5" stroke-dasharray="3 3" />
+                <circle id="core2-pro-drop-dot" r="2.5" fill="#ff4d6d" />
+                <line id="core2-pro-line-e" stroke="#ffcc44" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.8" />
+                <line id="core2-pro-line-l" stroke="#ff4d6d" stroke-width="1.5" />
+                <path id="core2-pro-arc-line" fill="none" stroke="#ff4d6d" stroke-width="2" />
+                <circle id="core2-pro-center-dot" r="3" fill="#ff4d6d" />
+                <text id="core2-pro-angle-text" fill="#ff4d6d" font-family="Courier New" font-weight="900" font-size="14" dominant-baseline="central" text-anchor="middle" style="text-shadow: 0 0 8px rgba(255, 77, 109, 0.8);"></text>
+            </g>
+            <text class="arc-text lunar-text"><textPath id="core2-text-path-el" href="#core2-invisible-arc" startOffset="50%" text-anchor="middle"></textPath></text>
+            <text class="arc-text ecliptic-text"><textPath id="core2-ecliptic-text-path" href="#core2-ecliptic-arc" startOffset="50%" text-anchor="middle"></textPath></text>
+        </svg>
+    </div>
+
+    <!-- CORE Subpage 3: 覆绛·轨道律动定格 -->
+    <div id="core-subpage-3" class="core-subpage inactive">
+        <div id="core3-app-container">
+            <canvas id="glcanvas-core-04"></canvas>
+            <div id="core3-interaction-layer"></div>
+            <div class="fly-container">
+                <div class="fly-icon">🛰️</div>
+                <div class="fly-tooltip" id="core3-fly-tip">【观测视角：NASA Lucy 探测器】2022年5月，Lucy 探测器在距地球 1 亿公里（约日地距离的 70%）的深空独特视角，使用 L'LORRI 高分辨率相机，凝视并记录了地球阴影投射在月球上的月全食全过程。</div>
+            </div>
+            <div id="core3-ui-layer">
+                <header>
+                    <div class="tagline">CELESTIAL MECHANICS RECONSTRUCTION</div>
+                    <h3>覆绛 : 轨道律动定格</h3>
+                    <p class="desc">揭示空间几何的暗流。观察剖面图：白道与黄道的<b style="color:#ffb464;">交角 (5°) 退行滑动</b>，导致了月球每次穿越的位置都在精准下沉；结合世界视界：地球自转余数制造了完美的 <b style="color:#f0f0e6;">120° 向西偏移</b>。</p>
+                </header>
+                <div class="content-row">
+                    <div class="matrix-wrapper">
+                        <div class="y-axis"><span>经历 3 个沙罗周期 = 1 个转轮周期 (~54.1年)</span></div>
+                        <div class="grid-container" id="core3-grid"></div>
+                    </div>
+                </div>
+                <div class="bottom-bar">
+                    <div class="x-axis">
+                        <div class="x-axis-col">经历 1 个沙罗周期 (向西偏移 120°)</div>
+                        <div class="x-axis-col">经历 1 个沙罗周期 (向西偏移 120°)</div>
+                    </div>
+                    <div class="citation">Celestial Mechanics Simulation</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <svg id="text-svg-layer" class="ui-layer">
+        <defs><path id="invisible-arc" fill="none" d="" /></defs>
+        <text class="arc-text">
+            <textPath id="text-path-el" href="#invisible-arc" startOffset="50%" text-anchor="middle"></textPath>
+        </text>
+    </svg>
+
+    <div id="errorOverlay"></div>
+
+    <script src="js/bundle.js?v=20260603" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            MoonApp.init();
+        });
+    </script>
+</body>
+</html>

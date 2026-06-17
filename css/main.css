@@ -1,0 +1,530 @@
+/* ★ 蓝黄波普风：极深蓝基底 (默认主题) */
+body { margin: 0; overflow: hidden; background-color: #05030f; color: #fff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 300; transition: background-color 0.8s ease; }
+
+/* ========================================================= */
+/* 动态主题切换 - CORE Theme (血月/绯红基底) */
+/* ========================================================= */
+body.theme-core { background-color: #0d0214; }
+body.theme-core .retro-tab.active-tab { background-color: #ff2a4b; color: #fff; box-shadow: 0 0 12px rgba(255,42,75,0.6); }
+body.theme-core .bottom-tool-bar { color: #ff2a4b; }
+body.theme-core #lab-ui-container { background: linear-gradient(180deg, #ff2a4b 0%, rgba(255, 42, 75, 0.4) 100%); }
+body.theme-core #lab-ui {
+    background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255, 42, 75, 0.05) 3px, rgba(255, 42, 75, 0.05) 6px), linear-gradient(135deg, rgba(30, 5, 40, 0.8), rgba(20, 5, 10, 0.95));
+    box-shadow: inset 0 1px 20px rgba(255,42,75,0.2);
+}
+body.theme-core #lab-ui::-webkit-scrollbar-thumb { background: #ff2a4b; border-radius: 2px; }
+body.theme-core .tagline { color: #ff4d6d; }
+body.theme-core h3 { text-shadow: 0 2px 15px rgba(255,42,75,0.6); }
+body.theme-core p.desc { color: #ccbbcc; }
+body.theme-core .progress-display { text-shadow: 0 4px 20px rgba(255,42,75,0.5); }
+body.theme-core .progress-display span { color: #ff2a4b; }
+body.theme-core .physics-panel { border-color: rgba(255,42,75,0.25); }
+body.theme-core .phys-row { color: #aa99bb; }
+body.theme-core .phys-val { color: #ff4d6d; text-shadow: 0 0 8px rgba(255,42,75,0.6); }
+body.theme-core .nav-btn { border-color: rgba(255, 42, 75, 0.3); color: #ffccd5; }
+body.theme-core .nav-btn::before { background: linear-gradient(90deg, transparent, rgba(255,42,75,0.2), transparent); }
+body.theme-core .nav-btn:hover { border-color: #ff2a4b; color: #fff; background: rgba(255, 42, 75, 0.15); }
+body.theme-core .nav-btn.active { background: rgba(255, 42, 75, 0.25); border-color: #ff2a4b; color: #fff; border-left-color: #ff2a4b; }
+
+/* ========================================================= */
+/* Course 01 Theme (紫辉/神话基底) */
+/* ========================================================= */
+body.theme-course01 { background-color: #05030f; }
+body.theme-course01 .retro-tab.active-tab { background-color: #a855f7; color: #fff; box-shadow: 0 0 12px rgba(168,85,247,0.6); }
+body.theme-course01 .bottom-tool-bar { color: #a855f7; }
+body.theme-course01 #lab-ui-container { background: linear-gradient(180deg, #a855f7 0%, rgba(168, 85, 247, 0.4) 100%); }
+body.theme-course01 #lab-ui {
+    background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(168, 85, 247, 0.05) 3px, rgba(168, 85, 247, 0.05) 6px), linear-gradient(135deg, rgba(15, 5, 30, 0.8), rgba(10, 5, 15, 0.95));
+    box-shadow: inset 0 1px 20px rgba(168,85,247,0.2);
+}
+body.theme-course01 #lab-ui::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 2px; }
+body.theme-course01 .tagline { color: #c084fc; }
+body.theme-course01 h3 { text-shadow: 0 2px 15px rgba(168,85,247,0.6); }
+body.theme-course01 p.desc { color: #ccccee; }
+body.theme-course01 .progress-display { text-shadow: 0 4px 20px rgba(168,85,247,0.5); }
+body.theme-course01 .progress-display span { color: #a855f7; }
+body.theme-course01 .physics-panel { border-color: rgba(168,85,247,0.25); }
+body.theme-course01 .phys-row { color: #9999cc; }
+body.theme-course01 .phys-val { color: #c084fc; text-shadow: 0 0 8px rgba(168,85,247,0.6); }
+body.theme-course01 .nav-btn { border-color: rgba(168, 85, 247, 0.3); color: #d4ccff; }
+body.theme-course01 .nav-btn::before { background: linear-gradient(90deg, transparent, rgba(168,85,247,0.2), transparent); }
+body.theme-course01 .nav-btn:hover { border-color: #a855f7; color: #fff; background: rgba(168, 85, 247, 0.15); }
+body.theme-course01 .nav-btn.active { background: rgba(168, 85, 247, 0.25); border-color: #a855f7; color: #fff; border-left-color: #a855f7; }
+
+/* ========================================================= */
+/* Course 02 Theme (覆绛/粉色基底) */
+/* ========================================================= */
+body.theme-course02 { background-color: #0f172a; }
+body.theme-course02 .retro-tab.active-tab { background-color: #ff77aa; color: #fff; box-shadow: 0 0 12px rgba(255,119,170,0.6); }
+body.theme-course02 .bottom-tool-bar { color: #ff77aa; }
+body.theme-course02 #lab-ui-container { background: linear-gradient(180deg, #ff77aa 0%, rgba(255, 119, 170, 0.4) 100%); }
+body.theme-course02 #lab-ui {
+    background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255, 119, 170, 0.05) 3px, rgba(255, 119, 170, 0.05) 6px), linear-gradient(135deg, rgba(25, 15, 30, 0.8), rgba(15, 10, 20, 0.95));
+    box-shadow: inset 0 1px 20px rgba(255,119,170,0.2);
+}
+body.theme-course02 #lab-ui::-webkit-scrollbar-thumb { background: #ff77aa; border-radius: 2px; }
+body.theme-course02 .tagline { color: #ff77aa; }
+body.theme-course02 h3 { text-shadow: 0 2px 15px rgba(255,119,170,0.6); }
+body.theme-course02 p.desc { color: #b8c4d8; }
+body.theme-course02 .progress-display { text-shadow: 0 4px 20px rgba(255,119,170,0.5); }
+body.theme-course02 .progress-display span { color: #ff77aa; }
+body.theme-course02 .physics-panel { border-color: rgba(255,119,170,0.25); }
+body.theme-course02 .phys-row { color: #b8c4d8; }
+body.theme-course02 .phys-val { color: #ff77aa; text-shadow: 0 0 8px rgba(255,119,170,0.6); }
+body.theme-course02 .nav-btn { border-color: rgba(255, 119, 170, 0.3); color: #cbd5e1; }
+body.theme-course02 .nav-btn::before { background: linear-gradient(90deg, transparent, rgba(255,119,170,0.2), transparent); }
+body.theme-course02 .nav-btn:hover { border-color: #ff77aa; color: #fff; background: rgba(255, 119, 170, 0.15); }
+body.theme-course02 .nav-btn.active { background: rgba(255, 119, 170, 0.25); border-color: #ff77aa; color: #fff; border-left-color: #ff77aa; }
+
+/* ========================================================= */
+/* Course 02 Subpage: 视频弹窗 */
+/* ========================================================= */
+#video-panel-container {
+    position: absolute; top: 50%; left: 50%; 
+    transform: translate(-50%, -50%);
+    width: 85vw; max-width: 1400px;
+    z-index: 100; 
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+    background: linear-gradient(135deg, #ff77aa 0%, #a855f7 100%);
+    padding: 2px; box-sizing: border-box;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    opacity: 0; pointer-events: none;
+}
+#video-panel-container.active { opacity: 1; pointer-events: auto; }
+#video-panel { 
+    width: 100%;
+    clip-path: polygon(19px 0, 100% 0, 100% calc(100% - 19px), calc(100% - 19px) 100%, 0 100%, 0 19px);
+    background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255, 119, 170, 0.04) 3px, rgba(255, 119, 170, 0.04) 6px), rgba(15, 20, 40, 0.95);
+    background-size: 200% 200%, 100% 100%;
+    animation: sci-fi-scan 15s linear infinite;
+    backdrop-filter: blur(15px);
+    padding: 25px 35px 35px 35px; box-sizing: border-box;
+}
+.video-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.close-video-btn { background: none; border: none; color: #ff77aa; font-size: 24px; cursor: pointer; transition: 0.3s; padding: 0; line-height: 1; }
+.close-video-btn:hover { color: #fff; transform: scale(1.1) rotate(90deg); }
+.video-player-wrapper { 
+    width: 100%; aspect-ratio: 16 / 9; max-height: 70vh;
+    background: #000; border: 1px solid rgba(255, 119, 170, 0.3); 
+    border-radius: 4px; overflow: hidden; 
+    display: flex; align-items: center; justify-content: center;
+}
+.video-player-wrapper video { width: 100%; height: 100%; object-fit: contain; outline: none; }
+
+/* ========================================================= */
+/* Course 01 Subpage: Prologue (神话序幕) */
+/* ========================================================= */
+#prologue-layer {
+    position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0; opacity: 0; pointer-events: none; transition: opacity 1.5s ease;
+}
+#prologue-canvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; display: block; }
+
+.myth-panel {
+    position: absolute; top: 8vh; left: 0; width: 440px; z-index: 10;
+    opacity: 0; pointer-events: none; padding: 40px 35px 40px calc(5vw + 35px);
+    background: linear-gradient(135deg, rgba(20, 5, 30, 0.4), rgba(10, 0, 15, 0.6));
+    border-left: 3px solid rgba(168, 85, 247, 0.0);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    transform: translateX(-50px); transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+.myth-panel.active { opacity: 1; pointer-events: auto; transform: translateX(0); border-left: 3px solid rgba(168, 85, 247, 0.8); }
+.myth-panel.docked {
+    opacity: 0.6; pointer-events: auto; transform: translateX(calc(-100% + 15px));
+    border-right: 3px solid rgba(168, 85, 247, 0.8); border-left: 3px solid transparent;
+    background: linear-gradient(135deg, rgba(20, 5, 30, 0.8), rgba(10, 0, 15, 0.9)); cursor: pointer;
+    transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 2s ease, background 2s ease;
+}
+#myth-panel-1.docked, #myth-panel-1.docked:hover { top: 10vh; }
+#myth-panel-2.docked, #myth-panel-2.docked:hover { top: 25vh; }
+#myth-panel-3.docked, #myth-panel-3.docked:hover { top: 40vh; }
+#myth-panel-4.docked, #myth-panel-4.docked:hover { top: 55vh; }
+#myth-panel-5.docked, #myth-panel-5.docked:hover { top: 70vh; }
+.myth-panel.docked:hover {
+    opacity: 1; transform: translateX(0); border-right: 3px solid transparent; border-left: 3px solid rgba(168, 85, 247, 0.8);
+    background: linear-gradient(135deg, rgba(30, 10, 40, 0.9), rgba(15, 0, 20, 0.95)); z-index: 20;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.8s ease;
+}
+.myth-panel.docked::after {
+    content: '>'; position: absolute; right: 2px; top: 50%; transform: translateY(-50%);
+    color: rgba(168, 85, 247, 0.9); font-family: monospace; font-size: 14px; font-weight: bold; pointer-events: none; transition: opacity 0.3s;
+}
+.myth-panel.docked:hover::after { opacity: 0; }
+.myth-tag { font-family: 'Courier New', Courier, monospace; font-size: 11px; color: #c084fc; letter-spacing: 4px; margin-bottom: 12px; font-weight: bold; }
+.myth-title { color: #fff; font-size: 26px; font-weight: 300; letter-spacing: 4px; margin: 0 0 25px 0; text-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+.myth-p { font-size: 13.5px; line-height: 2.2; color: rgba(215, 205, 230, 0.85); margin-bottom: 22px; text-align: justify; letter-spacing: 0.5px; }
+.myth-p:last-child { margin-bottom: 0; }
+.myth-highlight { color: #d8b4fe; font-weight: bold; text-shadow: 0 0 8px rgba(168, 85, 247, 0.6); }
+.myth-tag, .myth-title, .myth-p { opacity: 0; filter: blur(5px); transition: opacity 1.5s ease, filter 1.5s ease; }
+.myth-panel.active .myth-tag, .myth-panel.active .myth-title, .myth-panel.active .myth-p { opacity: 1; filter: blur(0); }
+.myth-panel.active .myth-tag { transition-delay: 0.5s; }
+.myth-panel.active .myth-title { transition-delay: 1.5s; }
+.myth-panel.active .myth-p:nth-of-type(1) { transition-delay: 3.0s; }
+.myth-panel.active .myth-p:nth-of-type(2) { transition-delay: 5.0s; }
+.myth-panel.active .myth-p:nth-of-type(3) { transition-delay: 7.0s; }
+.myth-panel.docked .myth-tag, .myth-panel.docked .myth-title, .myth-panel.docked .myth-p { opacity: 0; filter: blur(4px); transition-delay: 0s !important; transition-duration: 1.5s !important; }
+.myth-panel.docked:hover .myth-tag, .myth-panel.docked:hover .myth-title, .myth-panel.docked:hover .myth-p { opacity: 1; filter: blur(0); transition-duration: 0.8s !important; }
+
+/* ========================================================= */
+/* Course 03 - Subpage 0: 深度月偏食 (赛博都市) */
+/* ========================================================= */
+#course-03-scene {
+    position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0; opacity: 0; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none;
+}
+#cityCanvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+#course-03-scene .layout-container { position: relative; z-index: 1; display: flex; width: 100vw; height: 100vh; pointer-events: none; }
+#course-03-scene .visual-panel { width: 60%; height: 100%; position: relative; }
+
+#moonCanvas { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 35px rgba(167, 139, 250, 0.4)); }
+
+#course-03-scene #tracker { position: absolute; bottom: 10vh; left: 50%; transform: translateX(-50%); display: flex; gap: 100px; }
+#course-03-scene .phase-label { font-size: 1.6rem; color: rgba(255, 255, 255, 0.2); letter-spacing: 0.15em; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; font-weight: 500; }
+#course-03-scene .phase-label::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.2); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+#course-03-scene .phase-label.active { color: #fff; text-shadow: 0 0 20px rgba(196, 181, 253, 0.8), 0 0 40px rgba(167, 139, 250, 0.5); }
+#course-03-scene .phase-label.active::before { background-color: #a78bfa; box-shadow: 0 0 12px #8b5cf6, 0 0 24px rgba(139, 92, 246, 0.8); }
+
+#course-03-scene .text-panel {
+    width: 40%; height: 100%; box-sizing: border-box; 
+    padding: 28vh 6vw 5vh 2vw; display: flex; flex-direction: column; justify-content: flex-start; pointer-events: auto;
+    background: linear-gradient(90deg, rgba(5, 8, 12, 0.0) 0%, rgba(5, 8, 12, 0.7) 30%, rgba(5, 8, 12, 0.9) 100%);
+    overflow-y: auto; scrollbar-width: none;
+}
+#course-03-scene .text-panel::-webkit-scrollbar { display: none; }
+#course-03-scene h1 { font-size: 3.5rem; font-weight: 600; line-height: 1.2; margin: 0 0 20px 0; letter-spacing: 0.05em; color: #fff; text-shadow: -2px 0 15px rgba(167, 139, 250, 0.8), 2px 0 15px rgba(139, 92, 246, 0.6); }
+#course-03-scene p { font-size: 1.1rem; line-height: 2.2; color: rgba(240, 245, 250, 0.85); margin-bottom: 15px; letter-spacing: 0.03em; text-align: justify; }
+#course-03-scene .highlight { color: #a78bfa; font-weight: 600; text-shadow: 0 0 15px rgba(167, 139, 250, 0.8), 0 0 30px rgba(139, 92, 246, 0.4); }
+#course-03-scene strong { color: #c4b5fd; font-weight: 600; text-shadow: 0 0 10px rgba(196, 181, 253, 0.6); }
+
+/* ========================================================= */
+/* Course 03 - Subpage 1: 极深半影月食 (跨海大桥) */
+/* ========================================================= */
+#subpage-penumbral-scene {
+    position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0; opacity: 0; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none;
+}
+#bridgeCanvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+#subpage-penumbral-scene .layout-container { position: relative; z-index: 1; display: flex; width: 100vw; height: 100vh; pointer-events: none; }
+#subpage-penumbral-scene .visual-panel { width: 60%; height: 100%; position: relative; }
+
+#penumbralMoonCanvas { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 20px rgba(200, 220, 255, 0.2)); }
+
+#subpage-penumbral-scene #tracker-penumbral { position: absolute; bottom: 10vh; left: 50%; transform: translateX(-50%); display: flex; gap: 100px; }
+#subpage-penumbral-scene .phase-label { font-size: 1.6rem; color: rgba(255, 255, 255, 0.2); letter-spacing: 0.15em; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; font-weight: 500; }
+#subpage-penumbral-scene .phase-label::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.2); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+#subpage-penumbral-scene .phase-label.active { color: #fff; text-shadow: 0 0 20px rgba(226, 232, 240, 0.8), 0 0 40px rgba(255, 255, 255, 0.5); }
+#subpage-penumbral-scene .phase-label.active::before { background-color: #f8fafc; box-shadow: 0 0 12px #e2e8f0, 0 0 25px rgba(255, 255, 255, 0.8); }
+
+#subpage-penumbral-scene .text-panel {
+    width: 40%; height: 100%; box-sizing: border-box; 
+    padding: 28vh 6vw 5vh 2vw; display: flex; flex-direction: column; justify-content: flex-start; pointer-events: auto;
+    background: linear-gradient(90deg, rgba(5, 10, 15, 0.0) 0%, rgba(5, 10, 15, 0.7) 30%, rgba(5, 10, 15, 0.95) 100%);
+    overflow-y: auto; scrollbar-width: none;
+}
+#subpage-penumbral-scene .text-panel::-webkit-scrollbar { display: none; }
+#subpage-penumbral-scene h1 { font-size: 3.5rem; font-weight: 600; line-height: 1.2; margin: 0 0 20px 0; letter-spacing: 0.05em; color: #fff; text-shadow: -2px 0 15px rgba(200, 220, 255, 0.6), 2px 0 15px rgba(255, 255, 255, 0.4); }
+#subpage-penumbral-scene p { font-size: 1.1rem; line-height: 2.2; color: rgba(226, 232, 240, 0.85); margin-bottom: 15px; letter-spacing: 0.03em; text-align: justify; }
+#subpage-penumbral-scene .highlight { color: #94a3b8; font-weight: 600; text-shadow: 0 0 15px rgba(148, 163, 184, 0.8), 0 0 30px rgba(255, 255, 255, 0.3); }
+#subpage-penumbral-scene strong { color: #e2e8f0; font-weight: 600; text-shadow: 0 0 10px rgba(226, 232, 240, 0.5); }
+
+/* ========================================================= */
+/* Course 03 - Subpage 2: 全影吞噬 (血月) */
+/* ========================================================= */
+#subpage-total-scene {
+    position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0; opacity: 0; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none;
+}
+#totalCityCanvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+#subpage-total-scene .layout-container { position: relative; z-index: 1; display: flex; width: 100vw; height: 100vh; pointer-events: none; }
+#subpage-total-scene .visual-panel { width: 60%; height: 100%; position: relative; }
+
+#totalMoonCanvas { display: block; width: 100%; height: 100%; filter: drop-shadow(0 0 25px rgba(220, 20, 0, 0.4)); }
+
+#subpage-total-scene #tracker-total { position: absolute; bottom: 10vh; left: 50%; transform: translateX(-50%); display: flex; gap: 100px; }
+#subpage-total-scene .phase-label { font-size: 1.6rem; color: rgba(255, 255, 255, 0.2); letter-spacing: 0.15em; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; font-weight: 500; }
+#subpage-total-scene .phase-label::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.2); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+
+/* 血月专属的高亮和颜色 */
+#subpage-total-scene .phase-label.active { color: #fff; text-shadow: 0 0 20px rgba(255, 150, 100, 0.8), 0 0 40px rgba(255, 50, 0, 0.6); }
+#subpage-total-scene .phase-label.active::before { background-color: #ff5500; box-shadow: 0 0 15px #ff3300, 0 0 30px rgba(255, 50, 0, 0.9); }
+
+#subpage-total-scene .text-panel {
+    width: 40%; height: 100%; box-sizing: border-box; 
+    padding: 28vh 6vw 5vh 2vw; display: flex; flex-direction: column; justify-content: flex-start; pointer-events: auto;
+    background: linear-gradient(90deg, rgba(15, 5, 5, 0.0) 0%, rgba(15, 5, 5, 0.7) 30%, rgba(15, 5, 5, 0.95) 100%);
+    overflow-y: scroll; scrollbar-width: none;
+}
+#subpage-total-scene .text-panel::-webkit-scrollbar { display: none; }
+#subpage-total-scene h1 { font-size: 3.5rem; font-weight: 600; line-height: 1.2; margin: 0 0 15px 0; letter-spacing: 0.05em; color: #fff; text-shadow: -2px 0 20px rgba(255, 40, 0, 0.9), 2px 0 20px rgba(255, 100, 0, 0.7); }
+#subpage-total-scene p { font-size: 1.05rem; line-height: 2.0; color: rgba(255, 235, 225, 0.85); margin-bottom: 12px; letter-spacing: 0.03em; text-align: justify; }
+#subpage-total-scene .highlight { color: #ff3300; font-weight: 600; text-shadow: 0 0 15px rgba(255, 50, 0, 0.9), 0 0 30px rgba(255, 0, 0, 0.5); }
+#subpage-total-scene strong { color: #ff8833; font-weight: 600; text-shadow: 0 0 12px rgba(255, 136, 51, 0.7); }
+
+/* ========================================================= */
+/* 交互主系统与 3D 天体仪 */
+/* ========================================================= */
+canvas#glcanvas { display: block; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; }
+
+/* CORE mode: hide orbiter interaction, show orbiter canvas as thumbnail */
+body.core-mode canvas#glcanvas { z-index: 4; }
+body.core-mode #interaction-layer { display: none; }
+#interaction-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; }
+
+.top-nav-bar { position: absolute; top: 0; width: 100%; display: flex; justify-content: flex-end; align-items: flex-start; padding: 10px 0 0 0; box-sizing: border-box; z-index: 50; pointer-events: none; }
+.tabs-container { display: flex; background: #000; padding: 2px; gap: 2px; pointer-events: auto; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+#top-nav-bar.pip-active .tabs-container { transform: translateX(calc(-23vh + 42px)); }
+
+.retro-tab { background-color: #fff; color: #000; padding: 4px 16px; cursor: pointer; transition: all 0.2s; font-weight: 700; font-size: 13px; text-transform: uppercase; clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%); display: flex; align-items: center; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; border: 2px solid transparent; }
+.retro-tab:hover { background-color: #e5e7eb; }
+.retro-tab.active-tab { background-color: #ffaa00; color: #000; box-shadow: 0 0 10px rgba(255,170,0,0.4);}
+.retro-tab span { transform: translateX(2px); }
+
+#thumbnail-hitbox { position: absolute; right: -14px; top: calc(25px - 11.5vh); width: 23vh; height: 23vh; border-radius: 50%; z-index: 100; cursor: pointer; pointer-events: none; background: transparent; border: none; opacity: 0; transform: scale(0.8); transform-origin: center center; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+#top-nav-bar.pip-active #thumbnail-hitbox { pointer-events: auto; opacity: 1; transform: scale(1); }
+
+.bottom-tool-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 32px; background: #000; color: #ffaa00; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; font-size: 13px; z-index: 50; pointer-events: auto; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; transition: color 0.4s; }
+.tool-left { display: flex; gap: 30px; }
+.tool-item { display: flex; align-items: center; gap: 6px; cursor: pointer; transition: color 0.2s; }
+.tool-item:hover { color: #fff; }
+.tool-icon { display: flex; align-items: center; margin-left: 4px; }
+
+.ui-layer { transition: opacity 0.4s ease, transform 0.4s ease; z-index: 20; }
+.ui-hidden { opacity: 0 !important; pointer-events: none !important; transform: translateX(-20px); }
+
+#lab-ui-container { position: absolute; top: 60px; left: 40px; width: 360px; z-index: 10; clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); background: linear-gradient(135deg, #2c527a 0%, #ffaa00 100%); padding: 2px; box-sizing: border-box; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease; }
+#lab-ui { width: 100%; clip-path: polygon(19px 0, 100% 0, 100% calc(100% - 19px), calc(100% - 19px) 100%, 0 100%, 0 19px); background: repeating-linear-gradient( -45deg, transparent, transparent 3px, rgba(255, 170, 0, 0.04) 3px, rgba(255, 170, 0, 0.04) 6px ), rgba(10, 15, 25, 0.92); background-size: 200% 200%, 100% 100%; animation: sci-fi-scan 15s linear infinite; backdrop-filter: blur(10px); padding: 33px 28px; max-height: calc(100vh - 124px); overflow-y: auto; box-sizing: border-box; transition: background 0.6s ease, box-shadow 0.6s ease; }
+@keyframes sci-fi-scan { 0% { background-position: 0% 0%, 0 0; } 100% { background-position: 100% 100%, 0 0; } }
+#lab-ui::-webkit-scrollbar { width: 4px; }
+#lab-ui::-webkit-scrollbar-thumb { background: #ffaa00; transition: background 0.6s ease; } 
+
+.tagline { font-size: 11px; color: #ffcc55; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 8px; font-weight: bold; transition: color 0.6s; } 
+h3 { margin: 0 0 15px 0; font-size: 26px; color: #ffffff; letter-spacing: 2px; font-weight: 900; text-shadow: none; transition: text-shadow 0.6s; }
+p.desc { font-size: 13px; color: #b8cdd8; margin-bottom: 30px; line-height: 1.7; letter-spacing: 0.5px; transition: color 0.6s; }
+
+.progress-display { font-size: 54px; font-weight: bold; color: #ffffff; margin-bottom: 25px; letter-spacing: -2px; text-shadow: none; transition: text-shadow 0.6s; }
+.progress-display span { font-size: 14px; color: #ffaa00; margin-left: 8px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; transition: color 0.6s; }
+
+.physics-panel { border-top: 1px dashed rgba(255, 187, 0, 0.3); border-bottom: 1px dashed rgba(255, 187, 0, 0.3); padding: 15px 0; margin-bottom: 25px; transition: border-color 0.6s; }
+.phys-row { display: flex; justify-content: space-between; font-size: 11px; color: #aab8cc; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-family: 'JetBrains Mono', monospace; transition: color 0.6s; }
+.phys-val { color: #ffaa00; font-weight: bold; text-shadow: 0 0 5px rgba(255,170,0,0.3); transition: color 0.3s, text-shadow 0.6s; }
+
+.btn-group { display: flex; flex-direction: column; gap: 8px; position: relative; }
+.nav-btn { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(130, 160, 200, 0.2); color: #c8d8e8; padding: 14px 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: bold; letter-spacing: 0.5px; text-align: left; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; border-radius: 0; box-shadow: none; white-space: nowrap; }
+.nav-btn span:first-child { overflow: hidden; text-overflow: ellipsis; }
+.nav-btn span:last-child { flex-shrink: 0; margin-left: 10px; }
+.nav-btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(255,170,0,0.15), transparent); transition: left 0.4s; }
+.nav-btn:hover::before { left: 100%; }
+.nav-btn:hover { border-color: rgba(255, 170, 0, 0.5); color: #fff; background: rgba(255, 170, 0, 0.05); transform: none; box-shadow: none;}
+.nav-btn.active { background: rgba(255, 170, 0, 0.15); border-color: rgba(255, 170, 0, 0.6); color: #fff; border-left: 4px solid #ffaa00;}
+
+#text-svg-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 5; overflow: visible; transition: opacity 0.4s ease; }
+.arc-text { font-family: 'Courier New', Courier, monospace; font-weight: 900; paint-order: stroke fill; stroke-linejoin: round; transition: opacity 0.2s ease, text-shadow 0.6s, stroke 0.6s; }
+
+#errorOverlay { display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(40, 0, 0, 0.95); color: #ff5555; z-index: 9999; padding: 30px; box-sizing: border-box; font-family: monospace; white-space: pre-wrap; font-size: 1.2rem; overflow-y: auto; }
+
+@media (max-width: 768px) {
+  #course-03-scene .layout-container,
+  #subpage-penumbral-scene .layout-container,
+  #subpage-total-scene .layout-container { flex-direction: column; }
+  #course-03-scene .visual-panel,
+  #subpage-penumbral-scene .visual-panel,
+  #subpage-total-scene .visual-panel { width: 100%; height: 50%; }
+  #course-03-scene .text-panel,
+  #subpage-penumbral-scene .text-panel,
+  #subpage-total-scene .text-panel { width: 100%; height: 50%; padding: 2vh 6vw 5vh 4vw; background: linear-gradient(180deg, rgba(5, 8, 12, 0) 0%, rgba(5, 8, 12, 0.85) 15%, rgba(5, 8, 12, 0.95) 100%); }
+  #lab-ui-container { top: 10px; left: 10px; width: 280px; }
+  #lab-ui { padding: 20px 16px; max-height: calc(100vh - 100px); }
+  .bottom-tool-bar { padding: 0 10px; font-size: 11px; }
+  .tool-left { gap: 15px; }
+  .progress-display { font-size: 36px; }
+  h3 { font-size: 20px; }
+  .retro-tab { font-size: 10px; padding: 3px 10px; }
+  #course-03-scene h1, #subpage-penumbral-scene h1, #subpage-total-scene h1 { font-size: 2rem; }
+  #course-03-scene p, #subpage-penumbral-scene p, #subpage-total-scene p { font-size: 0.9rem; line-height: 1.7; }
+  #course-03-scene .phase-label, #subpage-penumbral-scene .phase-label, #subpage-total-scene .phase-label { font-size: 1.1rem; gap: 6px; }
+  #thumbnail-hitbox { width: 18vh; height: 18vh; top: calc(20px - 9vh); }
+}
+
+/* ========================================================= */
+/* CORE Subpages 公共样式 */
+/* ========================================================= */
+.core-subpage {
+    position: absolute; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 3;
+}
+.core-subpage.inactive {
+    opacity: 0; pointer-events: none; z-index: 0;
+}
+.core-subpage.active {
+    opacity: 1; pointer-events: auto; z-index: 3;
+}
+
+/* CORE panel styles - sci-fi scanning texture (shared) */
+.core-subpage #lab-ui,
+.core-subpage .core-ui-layer {
+    position: absolute; top: 20px; left: 20px;
+    padding: 25px; z-index: 10; backdrop-filter: blur(12px);
+    background:
+        repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255, 42, 75, 0.05) 3px, rgba(255, 42, 75, 0.05) 6px),
+        linear-gradient(135deg, rgba(30, 5, 40, 0.8), rgba(20, 5, 10, 0.95));
+    background-size: 200% 200%, 100% 100%;
+    animation: sci-fi-scan 15s linear infinite;
+    border: 1px solid rgba(255,42,75,0.3);
+    border-left: 4px solid #ff2a4b;
+    box-shadow: inset 0 1px 20px rgba(255,42,75,0.2), 8px 8px 0px rgba(255, 42, 75, 0.15);
+    max-height: calc(100vh - 80px); overflow-y: auto;
+    box-sizing: border-box;
+    width: 400px;
+}
+.core-subpage #lab-ui::-webkit-scrollbar,
+.core-subpage .core-ui-layer::-webkit-scrollbar { width: 4px; }
+.core-subpage #lab-ui::-webkit-scrollbar-thumb,
+.core-subpage .core-ui-layer::-webkit-scrollbar-thumb { background: #ff2a4b; border-radius: 2px; }
+
+@keyframes sci-fi-scan {
+    0% { background-position: 0% 0%, 0 0; }
+    100% { background-position: 100% 100%, 0 0; }
+}
+
+/* ========================================================= */
+/* CORE Subpage 0: 日心视角多维观测站 */
+/* ========================================================= */
+#core-subpage-0 canvas { display: block; width: 100vw; height: 100vh; position: absolute; z-index: 1; }
+#core-subpage-0 { font-family: 'JetBrains Mono', 'Courier New', Courier, monospace; color: #f0f0e6; }
+#core-subpage-0 .film-grain { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"); pointer-events: none; z-index: 5; }
+#core-subpage-0 #core0-interaction-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; cursor: grab; }
+#core-subpage-0 #core0-interaction-layer:active { cursor: grabbing; }
+#core-subpage-0 .fly-container { position: absolute; right: 10%; top: 30%; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: help; z-index: 10; }
+#core-subpage-0 .fly-icon { font-size: 40px; animation: bounce 3s infinite; text-shadow: 0 4px 4px rgba(0,0,0,0.5); filter: hue-rotate(300deg); }
+#core-subpage-0 .fly-tooltip { background: #000; color: #fff; font-size: 11px; padding: 10px; border: 1px solid #ff2a4b; max-width: 320px; opacity: 0; transition: opacity 0.3s; letter-spacing: 0; line-height: 1.4; text-align: justify; box-shadow: 0 0 15px rgba(255,42,75,0.2); }
+#core-subpage-0 .fly-container:hover .fly-tooltip { opacity: 1; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+#core-subpage-0 #core0-lab-ui { position: absolute; top: 40px; left: 20px; width: 380px; z-index: 10; pointer-events: auto; padding: 20px; background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255, 42, 75, 0.05) 3px, rgba(255, 42, 75, 0.05) 6px), linear-gradient(135deg, rgba(30, 5, 40, 0.8), rgba(20, 5, 10, 0.95)); background-size: 200% 200%, 100% 100%; animation: sci-fi-scan 15s linear infinite; border: 1px solid rgba(255,42,75,0.3); border-left: 4px solid #ff2a4b; backdrop-filter: blur(12px); box-shadow: inset 0 1px 20px rgba(255,42,75,0.2), 8px 8px 0px rgba(255, 42, 75, 0.15); }
+#core-subpage-0 #core0-lab-ui h3 { margin: 0 0 15px 0; font-size: 18px; color: #fff; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid rgba(255,42,75,0.5); padding-bottom: 8px; text-shadow: 0 2px 15px rgba(255,42,75,0.6); }
+#core-subpage-0 .control-group { margin-bottom: 20px; }
+#core-subpage-0 .control-header { font-size: 12px; color: #ff2a4b; margin-bottom: 8px; font-weight: bold; text-shadow: 0 0 5px rgba(255,42,75,0.4); }
+#core-subpage-0 label { font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; color: #fff; margin-bottom: 8px; }
+#core-subpage-0 input[type="radio"] { accent-color: #ff2a4b; transform: scale(1.2); }
+#core-subpage-0 input[type="range"] { width: 100%; margin-top: 5px; accent-color: #ff2a4b; height: 2px; background: rgba(255,42,75,0.3); outline: none; -webkit-appearance: none; appearance: none; }
+#core-subpage-0 input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; background: #ff2a4b; cursor: pointer; border-radius: 0; box-shadow: 0 0 5px #ff2a4b; }
+#core-subpage-0 .highlight { color: #ff2a4b; font-weight: bold; text-shadow: 0 0 8px rgba(255,42,75,0.6); }
+#core-subpage-0 .sub-text { font-size: 11px; color: #ccbbcc; margin-top: 5px; line-height: 1.4; }
+#core-subpage-0 .btn-eclipse { margin-top: 12px; padding: 8px 12px; background: rgba(255,42,75,0.2); color: #ff2a4b; border: 1px solid #ff2a4b; font-weight: bold; cursor: pointer; border-radius: 2px; width: 100%; transition: all 0.2s; letter-spacing: 1px; font-size: 12px; }
+#core-subpage-0 .btn-eclipse:hover { background: #ff2a4b; color: #fff; box-shadow: 0 0 10px rgba(255,42,75,0.5); }
+#core-subpage-0 #core0-pip-label { position: absolute; bottom: 42px; right: 42px; color: #ff2a4b; font-size: 11px; z-index: 10; background: rgba(30, 20, 45, 0.8); padding: 6px 12px; border: 1px solid rgba(255,42,75,0.4); pointer-events: none; font-weight: bold; letter-spacing: 1px; border-radius: 2px; text-shadow: 0 0 5px rgba(255,42,75,0.6); }
+
+/* ========================================================= */
+/* CORE Subpage 1: 全食透镜与血月显影 */
+/* ========================================================= */
+#core-subpage-1 { font-family: 'Inter', sans-serif; }
+#core-subpage-1 canvas { display: block; width: 100vw; height: 100vh; position: absolute; z-index: 1; }
+#core-subpage-1 .film-grain { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+#core-subpage-1 #core1-lab-ui { position: absolute; top: 20px; left: 20px; padding: 25px; width: 400px; z-index: 10; backdrop-filter: blur(12px); background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255, 42, 75, 0.05) 3px, rgba(255, 42, 75, 0.05) 6px), linear-gradient(135deg, rgba(30, 5, 40, 0.8), rgba(20, 5, 10, 0.95)); background-size: 200% 200%, 100% 100%; animation: sci-fi-scan 15s linear infinite; border: 1px solid rgba(255,42,75,0.3); border-left: 4px solid #ff2a4b; box-shadow: inset 0 1px 20px rgba(255,42,75,0.2), 8px 8px 0px rgba(255, 42, 75, 0.15); max-height: calc(100vh - 80px); overflow-y: auto; box-sizing: border-box; pointer-events: auto; }
+#core-subpage-1 #core1-lab-ui::-webkit-scrollbar { width: 4px; }
+#core-subpage-1 #core1-lab-ui::-webkit-scrollbar-thumb { background: #ff2a4b; border-radius: 2px; }
+#core-subpage-1 #core1-lab-ui h3 { margin: 0 0 8px 0; font-size: 20px; color: #fff; letter-spacing: 2px; font-weight: 900; text-shadow: 0 2px 15px rgba(255,42,75,0.6); text-transform: uppercase; }
+#core-subpage-1 p.desc { font-size: 12px; color: #ccbbcc; margin-bottom: 20px; line-height: 1.6; letter-spacing: 0.2px; font-weight: 400; }
+#core-subpage-1 .mode-toggle { display: flex; border: 1px solid rgba(255,42,75,0.3); margin-bottom: 20px; background: rgba(0,0,0,0.5); }
+#core-subpage-1 .mode-btn { flex: 1; padding: 10px 0; text-align: center; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.2s; color: #ccbbcc; font-family: 'JetBrains Mono', monospace; }
+#core-subpage-1 .mode-btn.active { background: rgba(255, 42, 75, 0.2); color: #ff2a4b; border-bottom: 2px solid #ff2a4b; text-shadow: 0 0 8px rgba(255,42,75,0.5); }
+#core-subpage-1 .mode-btn:hover:not(.active) { background: rgba(255,255,255,0.05); color: #fff; }
+#core-subpage-1 .control-group { margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 15px; border: 1px solid rgba(255,42,75,0.2); border-radius: 2px; }
+#core-subpage-1 .control-header { display: flex; justify-content: space-between; font-size: 11px; color: #ff4d6d; margin-bottom: 12px; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+#core-subpage-1 .val-highlight { color: #fff; font-weight: bold; font-size: 12px; }
+#core-subpage-1 input[type="range"] { width: 100%; accent-color: #ff2a4b; cursor: pointer; height: 4px; background: rgba(255,42,75,0.1); outline: none; -webkit-appearance: none; appearance: none; border-radius: 2px; }
+#core-subpage-1 input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; background: #ff2a4b; cursor: pointer; border-radius: 0; box-shadow: 0 0 5px #ff2a4b; }
+#core-subpage-1 input[type="range"].danger::-webkit-slider-thumb { background: #ff4d6d; box-shadow: 0 0 5px #ff4d6d; }
+#core-subpage-1 .terminal-box { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,42,75,0.2); padding: 15px; margin-bottom: 15px; border-left: 3px solid #ff4d6d; }
+#core-subpage-1 .term-title { font-weight: 800; font-size: 11px; margin-bottom: 8px; color: #ff4d6d; text-transform: uppercase; letter-spacing: 1px; font-family: 'JetBrains Mono', monospace; }
+#core-subpage-1 .term-log { font-size: 11px; color: #ccbbcc; line-height: 1.6; font-family: 'Inter', sans-serif; }
+#core-subpage-1 .highlight-w { color: #ffffff; font-weight: bold; text-shadow: 0 0 5px #fff; }
+
+/* ========================================================= */
+/* CORE Subpage 2: 黄白交角演示器 */
+/* ========================================================= */
+#core-subpage-2 { font-family: 'Courier New', Courier, monospace; }
+#core-subpage-2 canvas { display: block; width: 100vw; height: 100vh; position: absolute; z-index: 1; }
+#core-subpage-2 #core2-interaction-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; cursor: grab; }
+#core-subpage-2 #core2-interaction-layer:active { cursor: grabbing; }
+#core-subpage-2 #core2-lab-ui { width: 420px; }
+#core-subpage-2 h3 { margin: 0 0 15px 0; font-size: 26px; color: #fff; letter-spacing: 1px; font-weight: 900; text-shadow: 0 2px 15px rgba(255,42,75,0.6); }
+#core-subpage-2 p.desc { font-size: 13px; color: #ccbbcc; margin-bottom: 25px; line-height: 1.6; letter-spacing: 0.5px; }
+#core-subpage-2 .progress-display { font-size: 32px; font-weight: 900; color: #fff; background-color: #ff2a4b; margin-bottom: 20px; letter-spacing: 4px; padding: 6px 20px; display: inline-block; clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%); text-transform: uppercase; box-shadow: 0 0 15px rgba(255,42,75,0.4); }
+#core-subpage-2 .physics-panel { border-top: 1px dashed rgba(255,42,75,0.4); border-bottom: 1px dashed rgba(255,42,75,0.4); padding: 15px 0; margin-bottom: 30px; }
+#core-subpage-2 .phys-row { display: flex; justify-content: space-between; font-size: 12px; color: #ccbbcc; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+#core-subpage-2 .phys-val { font-weight: bold; }
+#core-subpage-2 .phys-val.gold { color: #ffcc44; text-shadow: 0 0 5px rgba(255,204,68,0.5); }
+#core-subpage-2 .phys-val.silver { color: #ff4d6d; text-shadow: 0 0 5px rgba(255,77,109,0.5); }
+#core-subpage-2 .phys-val.highlight { color: #ff2a4b; text-shadow: 0 0 5px rgba(255,42,75,0.5); }
+#core-subpage-2 .btn-group { display: flex; flex-direction: column; gap: 12px; }
+#core-subpage-2 .nav-btn { background: transparent; border: 1px solid #ff4d6d; color: #ff4d6d; padding: 14px 16px; font-family: 'Courier New', Courier, monospace; font-size: 13px; font-weight: bold; letter-spacing: 0.5px; text-align: left; cursor: pointer; transition: all 0.2s; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; }
+#core-subpage-2 .nav-btn:hover { background: rgba(255, 42, 75, 0.15); transform: translateX(4px); color: #fff; border-color: #ff2a4b; }
+#core-subpage-2 .nav-btn.active { background: #ff2a4b; color: #fff; border-color: #ff2a4b; box-shadow: 4px 4px 0px rgba(255, 42, 75, 0.3); }
+#core-subpage-2 .nav-btn.active .status-tag { color: #fff !important; font-weight: 900; }
+#core-subpage-2 .nav-btn span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 10px; }
+#core-subpage-2 .status-tag { font-size: 11px; font-weight: bold; letter-spacing: 1px; flex-shrink: 0; }
+#core-subpage-2 #core2-text-svg-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10; overflow: visible; transition: opacity 0.2s ease; background: none; border: none; box-shadow: none; padding: 0; backdrop-filter: none; max-height: none; isolation: isolate; }
+#core-subpage-2 .arc-text { font-family: 'Courier New', Courier, monospace; font-weight: 900; paint-order: stroke fill; stroke-width: 4px; stroke-linejoin: round; dominant-baseline: central; }
+
+/* ========================================================= */
+/* CORE Subpage 3: 覆绛·轨道律动定格 */
+/* ========================================================= */
+#core-subpage-3 { font-family: 'Courier New', Courier, monospace; overflow-y: auto; overflow-x: hidden; --color-coral: #ff2a4b; --color-twilight: #ff4d6d; --color-sand: #ffb464; --color-slate: #ccbbcc; --color-base: #f0f0e6; --panel-border: rgba(255, 42, 75, 0.3); --umbra-fill: rgba(15, 5, 10, 0.95); }
+#core-subpage-3, #core-subpage-3 * { box-sizing: border-box; margin: 0; padding: 0; }
+#core-subpage-3 canvas { display: block; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+#core-subpage-3 #core3-app-container { position: relative; width: 100vw; max-width: 100vw; min-height: 100vh; background-color: #0d0214; box-shadow: 0 0 6vw rgba(0,0,0,0.9); overflow-x: hidden; box-sizing: border-box; }
+#core-subpage-3 #core3-app-container::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.04"/%3E%3C/svg%3E'); pointer-events: none; z-index: 20; }
+#core-subpage-3 #core3-interaction-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; cursor: grab; }
+#core-subpage-3 #core3-interaction-layer:active { cursor: grabbing; }
+#core-subpage-3 #core3-ui-layer { position: relative; z-index: 10; width: 100%; max-width: 100vw; min-height: 100vh; display: flex; flex-direction: column; padding: 4vw 5vw 40px 5vw; pointer-events: none; box-sizing: border-box; overflow-x: hidden; }
+#core-subpage-3 #core3-ui-layer > * { pointer-events: auto; }
+#core-subpage-3 header { width: 100%; margin-bottom: 2vw; display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; background: linear-gradient(135deg, rgba(30, 5, 40, 0.8), rgba(20, 5, 10, 0.95)); padding: 2vw; border: 1px solid rgba(255,42,75,0.3); border-left: 4px solid #ff2a4b; backdrop-filter: blur(12px); box-shadow: inset 0 1px 20px rgba(255,42,75,0.15), 8px 8px 0px rgba(255, 42, 75, 0.15); box-sizing: border-box; }
+#core-subpage-3 .tagline { font-family: 'JetBrains Mono', monospace; font-size: 0.8vw; color: #ff2a4b; letter-spacing: 0.2vw; text-transform: uppercase; margin-bottom: 1vw; font-weight: 700; }
+#core-subpage-3 header h3 { margin: 0 0 1vw 0; font-size: 2.2vw; color: #fff; letter-spacing: 0.15vw; font-weight: 900; font-family: 'Inter', sans-serif; text-shadow: 0 2px 15px rgba(255,42,75,0.6); text-transform: uppercase; }
+#core-subpage-3 p.desc { font-size: 0.95vw; color: #ccbbcc; margin-bottom: 0; line-height: 1.6; letter-spacing: 0.05vw; font-weight: 400; max-width: 90%; }
+#core-subpage-3 p.desc b { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+#core-subpage-3 .content-row { display: flex; width: 100%; flex-grow: 1; min-height: 0; }
+#core-subpage-3 .matrix-wrapper { display: flex; position: relative; flex: 1; height: 100%; border-top: 1px dashed rgba(255,42,75,0.3); border-bottom: 1px dashed rgba(255,42,75,0.3); }
+#core-subpage-3 .y-axis { display: flex; align-items: center; justify-content: center; width: 3.5%; border-right: 1px dashed rgba(255,42,75,0.3); position: relative; }
+#core-subpage-3 .y-axis span { transform: rotate(-90deg); white-space: nowrap; color: #ff2a4b; letter-spacing: 0.1vw; font-size: 0.75vw; font-family: 'JetBrains Mono', monospace; font-weight: 700; text-transform: uppercase; }
+#core-subpage-3 .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; width: 96.5%; gap: 1vw; padding: 1vw; }
+#core-subpage-3 .card { min-width: 0; padding: 1.5vw; display: flex; flex-direction: column; position: relative; border: 1px solid rgba(255,42,75,0.3); background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255, 42, 75, 0.05) 3px, rgba(255, 42, 75, 0.05) 6px), linear-gradient(135deg, rgba(30, 5, 40, 0.8), rgba(20, 5, 10, 0.95)); background-size: 200% 200%, 100% 100%; animation: sci-fi-scan 15s linear infinite; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: inset 0 1px 20px rgba(255,42,75,0.15); gap: 1.2vw; box-sizing: border-box; }
+#core-subpage-3 .card-header { display: flex; justify-content: space-between; align-items: baseline; flex-shrink: 0; border-bottom: 1px solid rgba(255,42,75,0.2); padding-bottom: 0.8vw; }
+#core-subpage-3 .type-info { display: flex; align-items: baseline; gap: 0.6vw; }
+#core-subpage-3 .type-info .type { font-family: 'Inter', sans-serif; font-size: 1.2vw; font-weight: 800; letter-spacing: 0.05vw; text-transform: uppercase; }
+#core-subpage-3 .type-partial .type-info .type { color: #f0f0e6; }
+#core-subpage-3 .type-total .type-info .type { color: #ff2a4b; text-shadow: 0 0 10px rgba(255,42,75,0.6); }
+#core-subpage-3 .type-info .saros-label { font-size: 0.6vw; color: #ccbbcc; letter-spacing: 1px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+#core-subpage-3 .time-info { text-align: right; }
+#core-subpage-3 .time-info .year { font-size: 1vw; font-weight: 800; color: #fff; font-family: 'JetBrains Mono', monospace; }
+#core-subpage-3 .time-info .exact { font-size: 0.65vw; color: #ccbbcc; font-family: 'Courier Prime', monospace; margin-left: 0.5vw; }
+#core-subpage-3 .shadow-viz { flex: 0 0 auto; width: 100%; position: relative; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.5); border-radius: 2px; border: 1px solid rgba(255,42,75,0.2); padding: 1vw; }
+#core-subpage-3 .shadow-viz svg { height: 10vw; width: 100%; overflow: visible; }
+#core-subpage-3 .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.5vw; flex-shrink: 0; }
+#core-subpage-3 .data-col { display: flex; flex-direction: column; gap: 0.5vw; }
+#core-subpage-3 .phys-row { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,42,75,0.15); padding-bottom: 0.4vw; }
+#core-subpage-3 .phys-key { font-size: 0.6vw; color: #ccbbcc; font-weight: 700; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.05vw; }
+#core-subpage-3 .phys-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.75vw; color: #f0f0e6; }
+#core-subpage-3 .phys-val.coral { color: #ff2a4b; text-shadow: 0 0 8px rgba(255,42,75,0.5); }
+#core-subpage-3 .phys-val.twilight { color: #ff4d6d; }
+#core-subpage-3 .map-header { display: flex; justify-content: space-between; align-items: center; padding-top: 0.5vw; border-top: 1px dashed rgba(255,42,75,0.3); flex-shrink: 0; }
+#core-subpage-3 .map-header .title { font-family: 'Inter', sans-serif; font-size: 0.6vw; color: #ff2a4b; font-weight: 800; letter-spacing: 0.05vw; text-transform: uppercase; }
+#core-subpage-3 .map-header .desc { font-family: 'Courier Prime', monospace; font-size: 0.5vw; color: #ccbbcc; font-weight: 700; }
+#core-subpage-3 .geo-map-viz { width: 100%; aspect-ratio: 2 / 1; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,42,75,0.2); position: relative; overflow: hidden; border-radius: 2px; margin-top: auto; }
+#core-subpage-3 .world-map-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 42, 75, 0.1); -webkit-mask-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg'); mask-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg'); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-position: center; mask-position: center; }
+#core-subpage-3 .geo-map-viz svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
+@keyframes dash-flow { from { stroke-dashoffset: 6; } to { stroke-dashoffset: 0; } }
+#core-subpage-3 .flow-anim { animation: dash-flow 0.8s linear infinite; }
+@keyframes pulse-subpage3 { 0% { transform: scale(1); opacity: 0.8; stroke-width: 0.5px; } 100% { transform: scale(3.5); opacity: 0; stroke-width: 0.1px; } }
+#core-subpage-3 .pulse-anim { animation: pulse-subpage3 2.5s ease-out infinite; }
+#core-subpage-3 .bottom-bar { display: flex; width: 100%; margin-top: 2vw; flex-shrink: 0; justify-content: space-between; align-items: center; }
+#core-subpage-3 .x-axis { display: flex; padding-left: 3.5%; flex-grow: 1; gap: 2vw; }
+#core-subpage-3 .x-axis-col { color: #ff2a4b; font-family: 'JetBrains Mono', monospace; font-size: 0.65vw; letter-spacing: 0.05vw; font-weight: 700; display: flex; align-items: center; text-transform: uppercase; }
+#core-subpage-3 .x-axis-col::before { content: '←'; margin-right: 0.5vw; color: #ff2a4b; }
+#core-subpage-3 .citation { font-size: 0.6vw; color: #ccbbcc; font-family: 'JetBrains Mono', monospace; text-align: right; text-transform: uppercase; font-weight: 700; }
+#core-subpage-3 .fly-container { position: absolute; right: 10%; top: 30%; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: help; z-index: 10; pointer-events: auto; }
+#core-subpage-3 .fly-icon { font-size: 40px; animation: bounce 3s infinite; text-shadow: 0 4px 4px rgba(0,0,0,0.5); filter: hue-rotate(300deg); }
+#core-subpage-3 .fly-tooltip { background: #000; color: #fff; font-size: 11px; padding: 10px; border: 1px solid #ff2a4b; box-shadow: 0 0 15px rgba(255,42,75,0.2); max-width: 320px; opacity: 0; transition: opacity 0.3s; font-family: 'Inter', sans-serif; letter-spacing: 0; font-weight: bold; line-height: 1.4; text-align: justify; }
+#core-subpage-3 .fly-container:hover .fly-tooltip { opacity: 1; }

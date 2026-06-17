@@ -1,0 +1,1187 @@
+// CORE Subpage 2
+(function() {
+  var _mod = { initialized: false, animFrameId: null };
+  MoonApp.CoreSubpages._register(2, _mod);
+
+  _mod.init = function() {
+    if (_mod.initialized) return;
+    _mod.initialized = true;
+// ==========================================
+        // UI 状态控制 & 国际化翻译 (i18n)
+        // ==========================================
+        let menuVisible = true;
+        let targetProgress = 0.0;
+        let currentLang = 'zh';
+
+        const i18n = {
+            zh: {
+                title: "黄白交角与月食的捉迷藏",
+                desc: "<b>为什么月食不是每个月都有？</b><br>这源于地球公转轨道面（黄道面）与月球公转轨道面（白道面）之间存在的夹角——<b>黄白交角</b>。<br>为直观展示，本系统将夹角视效放大至 15°，并实体化了地月阴影锥。转动视角你会发现，在大多数时候，月球会从巨大的深红阴影上方或下方“完美错过”（如阶段二）。只有当轨道交点恰好对齐时，月食才会真正降临。",
+                physEcliptic: "黄道面 (基准):",
+                physEclipticVal: "0.00° (归零)",
+                physLunar: "白道面倾角:",
+                physNode: "交点退行:",
+                btn1: "[ 假设 ] 零度交角：每月必穿红影锥",
+                btn2: "[ 现实 ] 轨道倾斜：月球完美错过阴影",
+                btn3: "[ 交汇 ] 节点对齐：真实月食的触发带",
+                btn4: "[ 退行 ] 轨道漂移：18.6年的进动周期",
+                hideConsole: "隐藏控制台",
+                showConsole: "显示控制台",
+                references: "参考资料",
+                tab1: "引言",
+                tab2: "◀ 上一页",
+                tab3: "下一页 ▶",
+                tab4: "首页",
+                arcEcliptic: "✦ 黄道面 (ECLIPTIC PLANE) / 绝对物理基准 0.00° ✦",
+                arcLunar: [
+                    "✦ 白道面 (LUNAR PLANE) / 倾角 0.00° (假设重合) ✦", 
+                    "✦ 白道面 (LUNAR PLANE) / 倾角 5.14° (完美错开) ✦",
+                    "✦ 白道面 (LUNAR PLANE) / 节点对齐 (触发食季) ✦", 
+                    "✦ 白道面 (LUNAR PLANE) / 交点退行 (18.6年周期) ✦"
+                ],
+                stateNames: ["假设模型", "现实倾角", "黄白交汇", "交点退行"],
+                days: "天",
+                aligned: "° ALIGNED",
+                langToggle: "ENGLISH"
+            },
+            en: {
+                title: "LUNAR INCLINATION & ECLIPSES",
+                desc: "<b>Why don't we have an eclipse every month?</b><br>It's due to the angle between Earth's orbital plane (Ecliptic) and the Moon's orbital plane (Lunar plane)—the <b>Orbital Inclination</b>.<br>For visual clarity, this system exaggerates the angle to 15° and solidifies the umbral cones. Rotate the camera and you'll observe how the Moon typically 'perfectly misses' the massive deep-red shadow by passing above or below it (Stage 2). Eclipses only trigger when the orbital nodes align.",
+                physEcliptic: "ECLIPTIC (BASE):",
+                physEclipticVal: "0.00° (ZERO)",
+                physLunar: "LUNAR INCLIN.:",
+                physNode: "NODE REGRESS.:",
+                btn1: "[ HYPOTHESIS ] 0° ANGLE: MONTHLY ECLIPSES",
+                btn2: "[ REALITY ] INCLINED: PERFECTLY MISSING",
+                btn3: "[ ALIGNMENT ] NODES ALIGNED: ECLIPSE TRIGGER",
+                btn4: "[ REGRESSION ] 18.6-YEAR PRECESSION DRIFT",
+                hideConsole: "HIDE CONSOLE",
+                showConsole: "SHOW CONSOLE",
+                references: "REFERENCES",
+                tab1: "INTRO",
+                tab2: "◀ PREV",
+                tab3: "NEXT ▶",
+                tab4: "HOME",
+                arcEcliptic: "✦ ECLIPTIC PLANE / ABSOLUTE BASELINE 0.00° ✦",
+                arcLunar: [
+                    "✦ LUNAR PLANE / 0.00° INCLINATION (COINCIDING) ✦", 
+                    "✦ LUNAR PLANE / 5.14° INCLINATION (MISALIGNED) ✦",
+                    "✦ LUNAR PLANE / NODES ALIGNED (ECLIPSE SEASON) ✦", 
+                    "✦ LUNAR PLANE / NODE REGRESSION (18.6-YR CYCLE) ✦"
+                ],
+                stateNames: ["HYPOTHESIS", "REALITY INCL.", "NODE ALIGNMENT", "NODE REGRESS."],
+                days: " DAYS",
+                aligned: "° ALIGNED",
+                langToggle: "中文"
+            }
+        };
+
+        function updateLanguageUI() {
+            const dict = i18n[currentLang];
+            
+            document.getElementById('core2-ui-title').innerHTML = dict.title;
+            document.getElementById('core2-ui-desc').innerHTML = dict.desc;
+            document.getElementById('core2-lbl-ecl').innerText = dict.physEcliptic;
+            document.getElementById('core2-val-ecl-base').innerText = dict.physEclipticVal;
+            document.getElementById('core2-lbl-lun').innerText = dict.physLunar;
+            document.getElementById('core2-lbl-node').innerText = dict.physNode;
+            
+            document.getElementById('core2-btn-text-1').innerText = dict.btn1;
+            document.getElementById('core2-btn-text-2').innerText = dict.btn2;
+            document.getElementById('core2-btn-text-3').innerText = dict.btn3;
+            document.getElementById('core2-btn-text-4').innerText = dict.btn4;
+            
+            const el1 = document.getElementById('tab-1'); if (el1) el1.innerText = dict.tab1;
+            const el2 = document.getElementById('tab-2'); if (el2) el2.innerText = dict.tab2;
+            const el3 = document.getElementById('tab-3'); if (el3) el3.innerText = dict.tab3;
+            const el4 = document.getElementById('tab-4'); if (el4) el4.innerText = dict.tab4;
+            
+            const toggleText = document.getElementById('menu-toggle-text');
+            if (toggleText) toggleText.innerText = menuVisible ? dict.hideConsole : dict.showConsole;
+            
+            const lblRef = document.getElementById('lbl-ref'); if (lblRef) lblRef.innerText = dict.references;
+            const langBtn = document.getElementById('lang-btn'); if (langBtn) langBtn.innerText = dict.langToggle;
+            
+            updateTextArc(currentProgress);
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            updateLanguageUI();
+        }
+
+        function toggleMenuDrawer() {
+            const labUi = document.getElementById('core2-lab-ui');
+            const toggleText = document.getElementById('menu-toggle-text');
+            menuVisible = !menuVisible;
+            if (menuVisible) {
+                labUi.classList.remove('ui-hidden');
+                toggleText.innerText = i18n[currentLang].hideConsole;
+            } else {
+                labUi.classList.add('ui-hidden');
+                toggleText.innerText = i18n[currentLang].showConsole;
+            }
+        }
+
+        function switchTopTab(element) {
+            document.querySelectorAll('.retro-tab').forEach(tab => tab.classList.remove('active-tab'));
+            element.classList.add('active-tab');
+        }
+
+        _mod.setProgress = function(val, btn) {
+            targetProgress = val;
+            if (!MoonApp.state.menuVisible && typeof MoonApp.toggleMenuDrawer === 'function') {
+                MoonApp.toggleMenuDrawer();
+            }
+            
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+        }
+
+        function smoothstep(min, max, value) {
+            let x = Math.max(0, Math.min(1, (value - min) / (max - min)));
+            return x * x * (3 - 2 * x);
+        }
+
+        // ==========================================
+        // 核心 WebGL：三维残影逐年展开与体积光锥阴影
+        // ==========================================
+        const canvas = document.getElementById('glcanvas-core-03');
+        const gl = canvas.getContext('webgl', { alpha: true, antialias: true, depth: false });
+        if(!gl) alert("WebGL init failed");
+
+        const vsSource = `
+            attribute vec4 aVertexPosition;
+            void main() { gl_Position = aVertexPosition; }
+        `;
+
+        const fsSource = `
+            precision highp float;
+            
+            uniform vec3 iResolution;
+            uniform vec3 uCamParams; 
+            uniform float uProgress; 
+            uniform float uTime;
+
+            uniform vec2 uScreenOffset;
+            uniform float uCamZoom;
+            uniform float uPrecessionYear;
+
+            #define MAX_DIST 150.
+            #define PI 3.1415926535
+            #define TAU 6.2831853
+
+            const float SEED = 0.0;
+            
+            const vec3 SUN_POS = vec3(0.0, 0.0, 0.0);
+            const vec3 EARTH_POS = vec3(22.0, 0.0, 0.0);
+            
+            const float SUN_RADIUS = 3.5;
+            const float EARTH_RADIUS = 1.2;
+            const float MOON_ORBIT_R = 4.5;
+            const float MOON_RADIUS = 0.3;
+            
+            // ★ 还原至 Celestial / Crimson 星体色盘
+            const vec3 SUN_COLOR = vec3(1.0, 0.85, 0.6);     
+            const vec3 LAND_COLOR = vec3(0.25, 0.1, 0.2);   
+            const vec3 JUNGLE_COLOR = vec3(0.15, 0.05, 0.15); 
+            const vec3 DESERT_COLOR = vec3(0.6, 0.3, 0.3); 
+            const vec3 SNOW_COLOR = vec3(1.0, 0.8, 0.9);  
+            const float OCEAN_SIZE = 0.57;
+            const vec3 OCEAN_COLOR = vec3(0.1, 0.05, 0.2);   
+            
+            struct SdfCtx { float k; vec3 col; float d; };
+            float sdSphere(vec3 p, float r) { return length(p) - r; }
+
+            mat3 rotateY(float a) {
+                float c = cos(a), s = sin(a);
+                return mat3(c, 0.0, s, 0.0, 1.0, 0.0, -s, 0.0, c);
+            }
+            mat3 rotateZ(float a) {
+                float c = cos(a), s = sin(a);
+                return mat3(c, s, 0.0, -s, c, 0.0, 0.0, 0.0, 1.0);
+            }
+            mat3 calcLookAtMatrix(vec3 camPos, vec3 at) {
+                vec3 zAxis = normalize(at - camPos);
+                vec3 xAxis = normalize(cross(zAxis, vec3(0.0, 1.0, 0.0)));
+                vec3 yAxis = normalize(cross(xAxis, zAxis));
+                return mat3(xAxis, yAxis, zAxis);
+            }
+
+            void getDynamicState(out float lunInc, out float nodeA) {
+                lunInc = smoothstep(0.05, 0.30, uProgress) * 15.0 * PI / 180.0;
+                float n1 = smoothstep(0.36, 0.63, uProgress) * (PI / 2.0);
+                float n2 = (uPrecessionYear / 18.6) * TAU; 
+                nodeA = n1 + n2;
+            }
+
+            vec3 getMoonPos() {
+                float lunInc, nodeA;
+                getDynamicState(lunInc, nodeA);
+                float curA = (uTime * 0.4) * 2.0 * PI;
+                vec3 mPosLocal = vec3(MOON_ORBIT_R * cos(curA), 0.0, -MOON_ORBIT_R * sin(curA));
+                return EARTH_POS + rotateY(nodeA) * rotateZ(lunInc) * mPosLocal;
+            }
+
+            float hash12(vec2 p, float scale) {
+                p = mod(p, scale); p.y += SEED;
+                return fract(sin(dot(p, vec2(12.9898, 4.1414))) * 43758.5453);
+            }
+            float noise(vec2 p, float scale) {
+                p *= scale; vec2 f = fract(p); p = floor(p);
+                return mix(mix(hash12(p, scale), hash12(p + vec2(1.0, 0.0), scale), f.x),
+                           mix(hash12(p + vec2(0.0, 1.0), scale), hash12(p + vec2(1.0, 1.0), scale), f.x), f.y);
+            }
+            float fbm4(vec2 p, float scale) {
+                float s = 0.0, m = 0.0, a = 1.0;
+                for(int i = 0; i < 4; i++) { s += a * noise(p, scale); m += a; a *= 0.6; scale *= 2.0; }
+                return s / m;
+            }
+            float fbm7(vec2 p, float scale) {
+                float s = 0.0, m = 0.0, a = 1.0;
+                for(int i = 0; i < 7; i++) { s += a * noise(p, scale); m += a; a *= 0.6; scale *= 2.0; }
+                return s / m;
+            }
+
+            vec2 hash22(vec2 p, float scale) {
+                p = mod(p, scale); p.y += SEED;
+                vec3 p3 = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973));
+                p3 += dot(p3, p3.yzx + 33.33); return fract((p3.xx + p3.yz) * p3.zy);
+            }
+
+            float crater_noise(vec2 p, float scale) {
+                p *= scale; vec2 f = fract(p); p = floor(p);
+                float va = 0.0, wt = 0.0;
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        vec2 g = vec2(float(i), float(j));
+                        vec2 o = hash22(p + g, scale);
+                        float d = distance(f - g, o);
+                        float w = exp(-4.0 * d);
+                        va += w * sin(TAU * sqrt(max(d, 0.06))); wt += w;
+                    }
+                }
+                return abs(va / wt);
+            }
+
+            float crater_fbm(vec2 x) {
+                float craters = crater_noise(x, 7.0) * 0.6 + crater_noise(x, 20.0) * 0.2;
+                return 1.0 - (craters + fbm4(x, 48.0) * 0.35) * 0.4;
+            }
+
+            SdfCtx mapSolids(vec3 p) {
+                SdfCtx res = SdfCtx(0.0, vec3(0.0), MAX_DIST);
+                float dEarth = sdSphere(p - EARTH_POS, EARTH_RADIUS);
+                if(dEarth < res.d) res = SdfCtx(1.0, vec3(0.0), dEarth); 
+
+                vec3 mPos = getMoonPos();
+                float dMoon = sdSphere(p - mPos, MOON_RADIUS) + 1e-4; 
+                if(dMoon < res.d) res = SdfCtx(3.0, vec3(0.0), dMoon);
+
+                float dSun = sdSphere(p - SUN_POS, SUN_RADIUS);
+                if(dSun < res.d) res = SdfCtx(4.0, vec3(0.0), dSun);
+
+                float axesAlpha = smoothstep(0.70, 0.95, uProgress);
+                if (axesAlpha > 0.01) {
+                    vec3 p_e = p - EARTH_POS;
+                    float lunInc, nodeA;
+                    getDynamicState(lunInc, nodeA);
+                    
+                    vec3 n_lun = rotateY(nodeA) * rotateZ(lunInc) * vec3(0.0, 1.0, 0.0);
+                    float h_lun = dot(p_e, n_lun);
+                    float d_lun_line = length(p_e - n_lun * h_lun) - 0.03; 
+                    float d_lun_axis = max(d_lun_line, abs(h_lun) - 7.5);
+                    if (d_lun_axis < res.d) res = SdfCtx(5.0, vec3(0.0), d_lun_axis);
+                    
+                    float h_ecl = p_e.y;
+                    float d_ecl_line = length(p_e.xz) - 0.02;
+                    float d_ecl_axis = max(d_ecl_line, abs(h_ecl) - 8.5);
+                    if (d_ecl_axis < res.d) res = SdfCtx(6.0, vec3(0.0), d_ecl_axis);
+                }
+
+                return res;
+            }
+
+            vec3 calcNormal(vec3 pos) {
+                vec2 e = vec2(0.005, 0.0); 
+                return normalize(vec3(
+                    mapSolids(pos + e.xyy).d - mapSolids(pos - e.xyy).d,
+                    mapSolids(pos + e.yxy).d - mapSolids(pos - e.yxy).d,
+                    mapSolids(pos + e.yyx).d - mapSolids(pos - e.yyx).d
+                ));
+            }
+
+            float getShadow(vec3 p, vec3 l) {
+                float res = 1.0;
+                vec3 lightDir = -l; 
+                vec3 pe = p - EARTH_POS;
+                float t_earth = dot(pe, lightDir);
+                if (t_earth > 0.0) { 
+                    float d_earth = length(pe - t_earth * lightDir);
+                    float r_earth = EARTH_RADIUS * max(0.0, 1.0 - t_earth / 15.0); 
+                    if (d_earth < r_earth) res = 0.02; 
+                }
+                
+                vec3 mPos = getMoonPos();
+                vec3 pm = p - mPos;
+                float t_moon = dot(pm, lightDir);
+                if (t_moon > 0.0) {
+                    float d_moon = length(pm - t_moon * lightDir);
+                    float r_moon = MOON_RADIUS * max(0.0, 1.0 - t_moon / 5.0); 
+                    if (d_moon < r_moon) res = 0.02; 
+                }
+                return res;
+            }
+
+            vec4 renderVolumetricShadows(vec3 ro, vec3 rd, float t_solid) {
+                float b = dot(ro - EARTH_POS, rd);
+                float c = dot(ro - EARTH_POS, ro - EARTH_POS) - 400.0; 
+                float h = b*b - c;
+                
+                vec4 res = vec4(0.0);
+                if (h > 0.0) {
+                    float t_in = max(0.0, -b - sqrt(h));
+                    float t_out = min(t_solid, -b + sqrt(h));
+                    
+                    if (t_in < t_out) {
+                        int steps = 35;
+                        float dt = (t_out - t_in) / float(steps);
+                        float alpha = 0.0;
+                        vec3 col = vec3(0.0);
+                        
+                        vec3 mPos = getMoonPos();
+                        vec3 eDir = normalize(EARTH_POS - SUN_POS);
+                        vec3 mDir = normalize(mPos - SUN_POS);
+                        
+                        float dither = fract(sin(dot(rd.xy, vec2(12.9898, 78.233))) * 43758.5453);
+                        
+                        for(int i=0; i<35; i++) {
+                            float t = t_in + (float(i) + dither) * dt;
+                            vec3 p = ro + rd * t; 
+                            
+                            vec3 pe = p - EARTH_POS;
+                            float e_dist = dot(pe, eDir);
+                            if (e_dist > 0.0 && e_dist < 15.0) {
+                                float r = length(pe - e_dist * eDir);
+                                float umbra_r = EARTH_RADIUS * max(0.0, 1.0 - e_dist / 15.0);
+                                float pen_r = EARTH_RADIUS * (1.0 + e_dist / 30.0);
+                                
+                                if (r < pen_r) {
+                                    float pen = smoothstep(pen_r, umbra_r, r); 
+                                    float umb = smoothstep(umbra_r, 0.0, r);   
+                                    
+                                    float redGlow = smoothstep(0.3, 1.0, pen) * smoothstep(0.7, 0.0, umb);
+                                    
+                                    // ★ 体积光锥阴影绛红化
+                                    vec3 glowColor = vec3(1.0, 0.16, 0.29) * redGlow * 2.0; 
+                                    vec3 coreColor = vec3(0.1, 0.0, 0.05) * umb;            
+                                    
+                                    float distFade = (1.0 - e_dist / 15.0); 
+                                    float blockDensity = (pen * 0.15 + umb * 0.4);
+                                    
+                                    col += (glowColor + coreColor) * distFade * dt * 0.8;
+                                    alpha += blockDensity * distFade * dt * 0.5;
+                                }
+                            }
+                            
+                            vec3 pm = p - mPos;
+                            float m_dist = dot(pm, mDir);
+                            if (m_dist > 0.0 && m_dist < 6.0) {
+                                float r = length(pm - m_dist * mDir);
+                                float umbra_r = MOON_RADIUS * max(0.0, 1.0 - m_dist / 6.0);
+                                float pen_r = MOON_RADIUS * (1.0 + m_dist / 12.0);
+                                
+                                if (r < pen_r) {
+                                    float pen = smoothstep(pen_r, umbra_r, r);
+                                    float distFade = (1.0 - m_dist / 6.0);
+                                    alpha += pen * 0.5 * distFade * dt;
+                                }
+                            }
+                        }
+                        res = vec4(clamp(col, 0.0, 1.0), clamp(alpha, 0.0, 1.0));
+                    }
+                }
+                return res;
+            }
+
+            vec4 calcOrbitalPlanes(vec3 ro, vec3 rd, float t_solid) {
+                vec4 finalCol = vec4(0.0);
+                float lunInc, nodeA;
+                getDynamicState(lunInc, nodeA);
+
+                // 1. 黄道面 
+                if (abs(rd.y) > 1e-4) {
+                    float t_ecl = -ro.y / rd.y; 
+                    if (t_ecl > 0.0 && t_ecl < t_solid) {
+                        vec3 p = ro + rd * t_ecl;
+                        float r_sun = length(p.xz);
+                        
+                        if (r_sun > 3.8 && r_sun < 35.0) {
+                            float a_sun = atan(-p.z, p.x);
+                            if(a_sun < 0.0) a_sun += 2.0 * PI; 
+                            vec3 eclCol = vec3(0.0);
+                            float planeMask = smoothstep(35.0, 25.0, r_sun) * smoothstep(3.8, 4.5, r_sun);
+                            
+                            float fillAlpha = planeMask * 0.12;
+                            eclCol += vec3(0.4, 0.25, 0.05) * fillAlpha * 1.5;
+                            
+                            float sunRings = 1.0 - smoothstep(0.0, 0.03, abs(fract(r_sun * 0.5) - 0.5));
+                            eclCol += vec3(0.8, 0.6, 0.2) * sunRings * planeMask * 0.25;
+
+                            float radLines = 1.0 - smoothstep(0.0, 0.03, abs(fract(a_sun * 12.0 / PI) - 0.5));
+                            eclCol += vec3(0.8, 0.6, 0.2) * radLines * planeMask * 0.15;
+                            
+                            float track_earth = 1.0 - smoothstep(0.0, 0.08, abs(r_sun - 22.0));
+                            float ecl_targetAngle = mod(uTime * 0.4, TAU); 
+                            float tailLen = PI * 1.5;
+                            float angularDist = ecl_targetAngle - a_sun;
+                            if (angularDist < 0.0) angularDist += TAU;
+                            
+                            float hlAlpha = 0.0;
+                            if (angularDist < tailLen) {
+                                float intensity = 1.0 - (angularDist / tailLen);
+                                vec3 fillCol = mix(vec3(0.8, 0.1, 0.0), vec3(1.0, 0.9, 0.3), intensity);
+                                float eclEdgeFade = smoothstep(18.0, 22.0, r_sun) * (1.0 - smoothstep(22.0, 26.0, r_sun));
+                                eclCol += fillCol * eclEdgeFade * intensity * 2.5 * planeMask;
+                                eclCol += fillCol * track_earth * intensity * 4.0;
+                                hlAlpha += eclEdgeFade * intensity + track_earth * intensity;
+                            }
+                            
+                            vec3 p_e = p - EARTH_POS;
+                            float r_ecl_local = length(p_e.xz);
+                            if (r_ecl_local > 8.0 && r_ecl_local < 15.0) {
+                                float a_ecl_local = atan(-p_e.z, p_e.x);
+                                if (a_ecl_local < 0.0) a_ecl_local += TAU;
+                                
+                                float safeA_loc = a_ecl_local;
+                                if (safeA_loc > PI) safeA_loc -= TAU;
+                                
+                                if (abs(safeA_loc) < 0.7) {
+                                    float distToMid = abs(safeA_loc);
+                                    float distToEnds = 0.7 - abs(safeA_loc);
+                                    
+                                    float baseR = 9.5; 
+                                    float bulge = exp(-15.0 * distToMid) * 0.3;
+                                    float curl = exp(-25.0 * distToEnds) * 0.1;
+                                    float bracketRadius = baseR + bulge - curl;
+                                    float thickness = 0.02 + 0.01 * (bulge + curl);
+                                    
+                                    float viewComp = clamp(t_ecl / (abs(rd.y) * 800.0), 0.01, 0.5);
+                                    float bracketLine = 1.0 - smoothstep(0.0, viewComp, abs(r_ecl_local - bracketRadius));
+                                    
+                                    eclCol += vec3(1.0, 0.8, 0.3) * bracketLine * 4.0; 
+                                    
+                                    float anchorGlow = exp(-20.0 * distToMid) * exp(-10.0 * abs(r_ecl_local - (baseR + 0.3)));
+                                    eclCol += vec3(1.0, 0.9, 0.5) * anchorGlow * 8.0;
+                                    hlAlpha += max(bracketLine, anchorGlow * 0.5);
+                                }
+                            }
+
+                            float localMask = 0.0;
+                            float hideNodes = 1.0 - smoothstep(0.7, 0.8, uProgress);
+                            if (hideNodes > 0.0) {
+                                vec3 p_earth = p - EARTH_POS;
+                                float r_earth = length(p_earth.xz);
+                                localMask = smoothstep(10.0, 7.0, r_earth);
+                                if (localMask > 0.0) {
+                                    vec3 p_node = rotateY(-nodeA) * p_earth;
+                                    float zLine = (1.0 - smoothstep(0.0, 0.04, abs(p_node.x))) * localMask * step(r_earth, 6.0);
+                                    eclCol += vec3(1.0, 0.9, 0.4) * zLine * 2.0 * hideNodes;
+                                    float nodeDist = min(length(p_node - vec3(0.0, 0.0, 4.5)), length(p_node - vec3(0.0, 0.0, -4.5)));
+                                    eclCol += vec3(1.0, 0.9, 0.2) * (1.0 - smoothstep(0.0, 0.25, nodeDist)) * 1.5 * hideNodes;
+                                }
+                            }
+
+                            float optDepth = clamp(0.22 / (abs(rd.y) + 0.01), 0.7, 4.5);
+                            float combinedAlpha = clamp(fillAlpha + sunRings*0.2 + radLines*0.1 + hlAlpha + localMask*0.3, 0.0, 1.0);
+                            finalCol += vec4(eclCol * optDepth, combinedAlpha);
+                        }
+                    }
+                }
+
+                // 2. 白道面：当前实时主轨道 
+                mat3 rotLun = rotateY(nodeA) * rotateZ(lunInc);
+                vec3 n_lun = rotLun * vec3(0.0, 1.0, 0.0);
+                float dotN_lun = dot(rd, n_lun);
+                
+                if (abs(dotN_lun) > 1e-4) {
+                    float t_lun = dot(EARTH_POS - ro, n_lun) / dotN_lun;
+                    if (t_lun > 0.0 && t_lun < t_solid) {
+                        vec3 p = ro + rd * t_lun;
+                        vec3 p_local = p - EARTH_POS;
+                        vec3 p_flat = rotateZ(-lunInc) * rotateY(-nodeA) * p_local;
+                        float r_earth = length(p_flat.xz);
+                        
+                        if (r_earth > EARTH_RADIUS && r_earth < 9.0) {
+                            float a_earth = atan(-p_flat.z, p_flat.x);
+                            if(a_earth < 0.0) a_earth += 2.0 * PI; 
+                            
+                            float targetAngle = mod(uTime * 0.4 * TAU, TAU);
+                            vec3 ringCol = vec3(0.0);
+                            float alpha = 0.0;
+                            
+                            float planeMaskLun = smoothstep(8.5, 7.5, r_earth) * smoothstep(EARTH_RADIUS, EARTH_RADIUS + 0.2, r_earth);
+                            ringCol += vec3(0.1, 0.15, 0.2) * planeMaskLun * 0.15;
+                            alpha += planeMaskLun * 0.1;
+
+                            if (r_earth > 3.0 && r_earth < 8.5) {
+                                float mainTrack = 1.0 - smoothstep(0.0, 0.04, abs(r_earth - MOON_ORBIT_R));
+                                // ★ 白道面轨道基色绯红化
+                                ringCol += vec3(1.0, 0.3, 0.4) * mainTrack * 1.0; 
+
+                                float tailLen = PI * 1.2;
+                                float angularDist = targetAngle - a_earth;
+                                if (angularDist < 0.0) angularDist += TAU;
+                                
+                                if (angularDist < tailLen) {
+                                    float intensity = 1.0 - (angularDist / tailLen);
+                                    // ★ 白道面流苏绯红化
+                                    vec3 fillCol = mix(vec3(1.0, 0.16, 0.29), vec3(1.0, 0.8, 0.9), intensity);
+                                    float edgeFade = smoothstep(3.5, MOON_ORBIT_R, r_earth) * (1.0 - smoothstep(MOON_ORBIT_R, 6.0, r_earth));
+                                    ringCol += fillCol * edgeFade * intensity * 2.5; 
+                                    
+                                    vec3 trackCol = mix(vec3(1.0, 0.3, 0.4), vec3(1.0, 1.0, 1.0), intensity);
+                                    ringCol += trackCol * mainTrack * intensity * 3.0; 
+                                    alpha += edgeFade * intensity * 0.8;
+                                }
+
+                                float headDist = min(abs(a_earth - targetAngle), TAU - abs(a_earth - targetAngle));
+                                float cometGlow = exp(-10.0 * headDist) * exp(-12.0 * abs(r_earth - MOON_ORBIT_R));
+                                ringCol += vec3(1.0, 0.8, 0.9) * cometGlow * 15.0;
+
+                                float outerTrack = 1.0 - smoothstep(0.0, 0.04, abs(r_earth - 6.25));
+                                ringCol += vec3(0.8, 0.3, 0.4) * outerTrack * 0.5;
+
+                                float m1 = smoothstep(0.015, 0.0, abs(a_earth - PI * 0.5));
+                                float m2 = smoothstep(0.015, 0.0, abs(a_earth - PI));
+                                float m3 = smoothstep(0.015, 0.0, abs(a_earth - PI * 1.5));
+                                float m4 = smoothstep(0.015, 0.0, min(a_earth, TAU - a_earth)); 
+                                ringCol += vec3(1.0, 0.7, 0.8) * (m1+m2+m3+m4) * outerTrack * 6.0;
+
+                                float q = clamp(floor(uProgress * 4.0), 0.0, 3.0);
+                                float a_start = q * PI * 0.5, a_end = (q + 1.0) * PI * 0.5, a_mid = a_start + 0.785398;
+                                if (step(a_start, a_earth) * step(a_earth, a_end) > 0.5) {
+                                    float safeA = clamp(a_earth, 0.0, TAU);
+                                    float distToMid = abs(safeA - a_mid);
+                                    float distToEnds = min(abs(safeA - a_start), abs(safeA - a_end));
+                                    
+                                    float baseR = 7.6, bulge = exp(-15.0 * distToMid) * 0.15, curl = exp(-18.0 * distToEnds) * 0.05;
+                                    
+                                    float viewComp = clamp(t_lun / (abs(dotN_lun) * 800.0), 0.01, 0.5);
+                                    float bracketLine = 1.0 - smoothstep(0.0, viewComp, abs(r_earth - (baseR + bulge - curl)));
+                                    
+                                    // ★ 大括号绛红化
+                                    ringCol += vec3(1.0, 0.3, 0.4) * bracketLine * 5.0;
+                                    
+                                    float anchorGlow = exp(-20.0 * distToMid) * exp(-10.0 * abs(r_earth - (baseR + 0.5)));
+                                    ringCol += vec3(1.0, 0.6, 0.7) * anchorGlow * 10.0;
+                                    alpha += max(bracketLine, anchorGlow * 0.5);
+                                }
+                            }
+                            float optDepth = clamp(0.22 / (abs(dotN_lun) + 0.01), 0.7, 4.5);
+                            finalCol += vec4(ringCol * optDepth, clamp(alpha, 0.0, 1.0));
+                        }
+                    }
+                }
+
+                // 3. 延时残影 
+                float ghostAlpha = smoothstep(0.75, 0.95, uProgress);
+                if (ghostAlpha > 0.01) {
+                    for(int i = 0; i < 19; i++) {
+                        float f_i = float(i);
+                        if (f_i > uPrecessionYear + 0.5) continue; 
+
+                        float histNodeA = (PI / 2.0) + (f_i / 18.6) * TAU; 
+                        float individualAlpha = clamp(uPrecessionYear - f_i + 0.5, 0.0, 1.0) * ghostAlpha;
+
+                        mat3 rotHist = rotateY(histNodeA) * rotateZ(lunInc);
+                        vec3 n_hist = rotHist * vec3(0.0, 1.0, 0.0);
+                        float dotN_hist = dot(rd, n_hist);
+                        if (abs(dotN_hist) > 1e-4) {
+                            float t_hist = dot(EARTH_POS - ro, n_hist) / dotN_hist;
+                            if (t_hist > 0.0 && t_hist < t_solid) {
+                                vec3 p_hist = ro + rd * t_hist - EARTH_POS;
+                                vec3 p_flat_hist = rotateZ(-lunInc) * rotateY(-histNodeA) * p_hist;
+                                float r_flat = length(p_flat_hist.xz);
+                                
+                                float track_m = 1.0 - smoothstep(0.0, 0.04, abs(r_flat - MOON_ORBIT_R));
+                                float track_out = 1.0 - smoothstep(0.0, 0.04, abs(r_flat - 6.25));
+                                float trk = max(track_m, track_out * 0.4); 
+                                
+                                if (trk > 0.01) {
+                                    float optD = clamp(0.22 / (abs(dotN_hist) + 0.01), 0.7, 4.5);
+                                    // ★ 残影绯红化
+                                    vec3 histCol = vec3(1.0, 0.3, 0.4) * trk * individualAlpha * 1.5;
+                                    finalCol += vec4(histCol * optD, trk * individualAlpha * 0.2);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                return clamp(finalCol, 0.0, 1.0);
+            }
+
+            void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+                vec2 bg_uv = (-iResolution.xy + 2.0 * fragCoord.xy) / iResolution.y;
+                
+                float theta = uCamParams.x, phi = uCamParams.y, radius = uCamParams.z;
+                vec3 ro = EARTH_POS + vec3(radius * sin(phi) * cos(theta), radius * cos(phi), radius * sin(phi) * sin(theta));
+                mat3 cam = calcLookAtMatrix(ro, EARTH_POS);
+                vec3 rd_bg = cam * normalize(vec3(bg_uv, 2.2));
+
+                // ★ 深紫底色天空
+                vec3 skyTop = vec3(0.05, 0.01, 0.08);    
+                vec3 skyBottom = vec3(0.12, 0.02, 0.16);  
+                vec3 col = mix(skyBottom, skyTop, smoothstep(-0.6, 0.6, rd_bg.y));
+                
+                float stars = hash12(rd_bg.xy * 100.0, 1.0);
+                col += vec3(1.0) * smoothstep(0.99, 1.0, stars) * (1.0 - smoothstep(-0.2, 0.5, rd_bg.y));
+
+                vec3 bgSunDir = normalize(SUN_POS - ro);
+                float sunDot = max(0.0, dot(rd_bg, bgSunDir));
+                // ★ 太阳偏红金
+                col += vec3(1.0, 0.7, 0.4) * pow(sunDot, 400.0) * 2.0; 
+                col += vec3(1.0, 0.4, 0.2) * pow(sunDot, 50.0) * 1.5;     
+                col += vec3(0.8, 0.2, 0.1) * pow(sunDot, 10.0) * 0.5;
+
+                vec2 uv_obj = (-iResolution.xy + 2.0 * fragCoord.xy) / iResolution.y;
+                uv_obj = (uv_obj - uScreenOffset) * uCamZoom;
+                vec3 rd_obj = cam * normalize(vec3(uv_obj, 2.2));
+                
+                float pipDist = length(uv_obj);
+                float pipMask = mix(1.0, 1.0 - smoothstep(2.0, 2.1, pipDist), smoothstep(1.0, 2.0, uCamZoom));
+
+                if (pipMask > 0.0) {
+                    float t_solid = MAX_DIST, t = 0.0;
+                    SdfCtx ray;
+                    for(int i=0; i<80; i++) {
+                        ray = mapSolids(ro + rd_obj * t);
+                        if(ray.d < 0.001) { t_solid = t; break; }
+                        if(t > MAX_DIST) break;
+                        t += ray.d;
+                    }
+
+                    if (t_solid < MAX_DIST) {
+                        vec3 p = ro + rd_obj * t_solid;
+                        vec3 n = calcNormal(p);
+                        vec3 l = normalize(SUN_POS - p);
+                        
+                        float diff = max(dot(n, l), 0.0);
+                        float shadow = getShadow(p, l);
+                        vec3 objCol = vec3(0.0);
+                        
+                        if (ray.k == 1.0) { 
+                            vec3 normLocal = rotateY((uTime * 0.1) * TAU) * n;
+                            vec2 muv = vec2(atan(normLocal.z, normLocal.x) * 0.5, acos(clamp(-normLocal.y, -1.0, 1.0))) / PI;
+                            
+                            float continent = fbm7(muv, 4.0);
+                            float temp = fbm4(muv * 3.0 + vec2(31.33), 1.0);
+                            vec3 earthCol = mix(LAND_COLOR, DESERT_COLOR, smoothstep(0.25, 0.1, fbm4(muv * 3.0 - vec2(54.1), 1.0)));
+                            earthCol = mix(earthCol, JUNGLE_COLOR, smoothstep(0.1, 0.3, fbm4(muv * 3.0 - vec2(54.1), 1.0)) * smoothstep(0.3, 0.4, temp));
+                            earthCol = mix(earthCol, SNOW_COLOR, smoothstep(0.3, 0.2, temp));
+                            
+                            float land = smoothstep(0.01, 0.0, 0.57 - continent);
+                            earthCol *= sqrt(continent) * land * 1.2 * smoothstep(1.0, 0.99, abs(normLocal.y));
+                            earthCol += (1.0 - continent) * smoothstep(0.57, 0.56, continent) * OCEAN_COLOR;
+                            earthCol.rgb *= sqrt(1.0 + 0.1 * cos(sqrt(continent) * 512.0));
+
+                            if (diff > 0.0) {
+                                // ★ 将漫反射指数 0.7 降到 0.55，强度 3.0 升到 5.5，让地球向阳面更通透、更宽广
+                                objCol = earthCol * pow(diff, 0.55) * shadow * 5.5 * SUN_COLOR; 
+                            } else {
+                                float backLight = max(0.0, dot(n, vec3(-l.x, -l.y, -l.z))); 
+                                objCol = vec3(0.005, 0.01, 0.02) * earthCol * backLight;
+                                float cityLights = fbm4(normLocal.xy * 15.0 + 100.0, 10.0);
+                                col += mix(vec3(1.0, 0.4, 0.8), vec3(0.2, 0.8, 1.0), hash12(normLocal.xy, 10.0)) * smoothstep(0.75, 0.95, cityLights) * land * 3.0; 
+                            }
+                            
+                            float fresnel = 1.0 - max(dot(n, -rd_obj), 0.0);
+                            float innerSunDot = dot(n, l);
+                            
+                            // ★ 添加晚霞渐变边缘（Terminator Glow）
+                            float terminator = smoothstep(-0.25, 0.05, innerSunDot) * smoothstep(0.25, -0.05, innerSunDot);
+                            vec3 sunsetColor = mix(vec3(0.8, 0.1, 0.4), vec3(1.0, 0.5, 0.1), smoothstep(-0.1, 0.1, innerSunDot));
+                            vec3 sunsetGlow = sunsetColor * terminator;
+
+                            // 组合基础大气，同步增强白昼大气的厚度
+                            vec3 dayAtmo = vec3(0.1, 0.4, 0.8) * pow(fresnel, 3.0) * smoothstep(-0.2, 0.5, innerSunDot) * 1.5;
+                            vec3 nightAtmo = vec3(0.05, 0.01, 0.1) * pow(fresnel, 4.0) * smoothstep(0.1, -0.8, innerSunDot);
+                            
+                            objCol += dayAtmo + nightAtmo;
+                            // 晚霞叠加至边缘与地表，与物理散射融合
+                            objCol += sunsetGlow * pow(fresnel, 1.5) * 5.0;
+                            objCol += sunsetGlow * earthCol * 2.5;
+                            
+                        } else if (ray.k == 3.0) { 
+                            float lunInc, nodeA;
+                            getDynamicState(lunInc, nodeA);
+                            mat3 rotMoon = rotateY(nodeA) * rotateZ(lunInc) * rotateY(-(uTime * 0.4) * 2.0 * PI); 
+                            vec3 normLocal = rotMoon * n;
+                            vec2 muv = vec2(atan(normLocal.z, normLocal.x) * 0.5, acos(clamp(-normLocal.y, -1.0, 1.0))) / PI;
+                            float craters_base = crater_fbm(muv) * 0.95; 
+                            objCol = craters_base * vec3(0.85, 0.88, 0.9) * pow(diff, 0.7) * shadow * 3.0 * SUN_COLOR; 
+                            objCol += craters_base * vec3(0.05, 0.08, 0.1) * max(0.0, dot(n, vec3(-l.x, -l.y, -l.z))) * 0.3 * (1.0 - shadow); 
+                        } else if (ray.k == 4.0) {
+                            float fresnel = 1.0 - max(dot(n, -rd_obj), 0.0);
+                            objCol = vec3(1.0, 0.8, 0.4) * 2.5 + vec3(1.0, 0.3, 0.0) * pow(fresnel, 2.0) * 4.0 + vec3(1.0, 0.9, 0.2) * fbm4(n.xy * 15.0 + uTime*0.2, 2.0) * 1.5;
+                        } else if (ray.k == 5.0) {
+                            objCol = vec3(1.0, 0.3, 0.4) * 3.0; // 白道极绛红
+                        } else if (ray.k == 6.0) {
+                            objCol = vec3(1.0, 0.7, 0.1) * 2.5; // 黄道极暖金
+                        }
+
+                        col = mix(col, objCol, pipMask);
+                    } 
+
+                    vec4 shadowVol = renderVolumetricShadows(ro, rd_obj, t_solid);
+                    col = col * (1.0 - shadowVol.a) + shadowVol.rgb * pipMask;
+
+                    vec4 planesData = calcOrbitalPlanes(ro, rd_obj, t_solid);
+                    col += planesData.rgb * planesData.a * pipMask; 
+                }
+
+                col = clamp(col, 0.0, 1.0);
+                col = col * (2.51 * col + 0.03) / (col * (2.43 * col + 0.59) + 0.14);
+                col = mix(col, col * vec3(0.95, 1.05, 1.1), 0.3);
+                col += mix(-1.0/255.0, 1.0/255.0, fract(sin(dot(fragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453));
+                fragColor = vec4(col, 1.0);
+            }
+
+            void main() { 
+                vec4 c;
+                mainImage(c, gl_FragCoord.xy); 
+                gl_FragColor = c;
+            }
+        `;
+
+        function loadShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error("Shader Error:", gl.getShaderInfoLog(shader));
+            }
+            return shader;
+        }
+
+        const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+        const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+        const shaderProgram = gl.createProgram();
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+        gl.useProgram(shaderProgram);
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,1, -1,-1, 1,1, 1,-1]), gl.STATIC_DRAW);
+
+        const vertexPosition = gl.getAttribLocation(shaderProgram, 'aVertexPosition');
+        gl.enableVertexAttribArray(vertexPosition);
+        gl.vertexAttribPointer(vertexPosition, 2, gl.FLOAT, false, 0, 0);
+
+        const locRes = gl.getUniformLocation(shaderProgram, "iResolution");
+        const locCam = gl.getUniformLocation(shaderProgram, "uCamParams");
+        const locProgress = gl.getUniformLocation(shaderProgram, "uProgress");
+        const locTime = gl.getUniformLocation(shaderProgram, "uTime");
+        const locOffset = gl.getUniformLocation(shaderProgram, "uScreenOffset");
+        const locZoom = gl.getUniformLocation(shaderProgram, "uCamZoom");
+        const locPrecessionYear = gl.getUniformLocation(shaderProgram, "uPrecessionYear");
+
+        let camTheta = Math.PI / 5.0, camPhi = Math.PI / 2.3, camRadius = 22.0; 
+        
+        const interactionLayer = document.getElementById('core2-interaction-layer');
+        let isDragging = false, lastX = 0, lastY = 0;
+        interactionLayer.addEventListener('mousedown', (e) => { isDragging = true; lastX = e.clientX; lastY = e.clientY; });
+        interactionLayer.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                camTheta -= (e.clientX - lastX) * 0.005; camPhi -= (e.clientY - lastY) * 0.005;
+                camPhi = Math.max(0.05, Math.min(Math.PI / 2.0 - 0.05, camPhi));
+                lastX = e.clientX; lastY = e.clientY;
+            }
+        });
+        interactionLayer.addEventListener('mouseup', () => isDragging = false);
+        interactionLayer.addEventListener('wheel', (e) => {
+            camRadius = Math.max(12.0, Math.min(50.0, camRadius + e.deltaY * 0.02));
+        });
+
+        let currentProgress = 0.0;
+        const startTime = performance.now();
+        let lastTime = startTime; 
+        const percText = document.getElementById('core2-perc-text');
+        const valLunEl = document.getElementById('core2-val-lun');
+        const valNodeEl = document.getElementById('core2-val-node');
+
+        let currentZoom = 1.0, currentOffsetX = 0.0, currentOffsetY = 0.0;
+        let precessionYear = 0.0;
+
+        const cross = (a, b) => [a[1]*b[2] - a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1] - a[1]*b[0]];
+        const dot = (a, b) => a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
+        const normalize = v => { const len = Math.sqrt(dot(v,v)); return [v[0]/len, v[1]/len, v[2]/len]; };
+
+        function project3Dto2D(px, py, pz) {
+            const ePos = [22.0, 0.0, 0.0];
+            const ro = [ 
+                ePos[0] + camRadius*Math.sin(camPhi)*Math.cos(camTheta), 
+                ePos[1] + camRadius*Math.cos(camPhi), 
+                ePos[2] + camRadius*Math.sin(camPhi)*Math.sin(camTheta) 
+            ];
+            const cw = normalize([ePos[0]-ro[0], ePos[1]-ro[1], ePos[2]-ro[2]]);
+            const cp = [0, 1, 0];
+            const cu = normalize(cross(cw, cp));
+            const cv = normalize(cross(cu, cw));
+            const p = [px - ro[0], py - ro[1], pz - ro[2]];
+            
+            const camZ = dot(p, cw);
+            if (camZ <= 0.5) return null; 
+            
+            let uvX = dot(p, cu) / camZ * 2.2;
+            let uvY = dot(p, cv) / camZ * 2.2;
+            
+            if (Math.abs(uvX) > 10.0 || Math.abs(uvY) > 10.0) return null;
+            
+            uvX = uvX / currentZoom + currentOffsetX;
+            uvY = uvY / currentZoom + currentOffsetY;
+            
+            return { x: (uvX*canvas.height + canvas.width)/2.0, y: canvas.height - ((uvY*canvas.height + canvas.height)/2.0), z: camZ };
+        }
+
+        function buildArcPath(points, centerIndex, svgPath, textPath, textEl) {
+            if (points.length < 2 || centerIndex < 0 || centerIndex >= points.length) { 
+                svgPath.setAttribute('d', ''); 
+                textEl.style.opacity = '0'; 
+                return 0; 
+            }
+            
+            let d = `M ${points[0].x} ${points[0].y}`;
+            let cumLen = [0]; 
+            
+            for (let i = 1; i < points.length; i++) {
+                let dist = Math.hypot(points[i].x - points[i-1].x, points[i].y - points[i-1].y);
+                cumLen.push(cumLen[i-1] + dist);
+                d += ` L ${points[i].x} ${points[i].y}`;
+            }
+            
+            svgPath.setAttribute('d', d);
+            let totalLen = cumLen[cumLen.length - 1];
+            let midLen = cumLen[centerIndex]; 
+            let offsetPct = (midLen / totalLen) * 100;
+            textPath.setAttribute('startOffset', offsetPct + '%');
+            textEl.style.opacity = '1';
+            
+            return totalLen; 
+        }
+
+        function updateProtractor(phase, displayDeg) {
+            const layer = document.getElementById('core2-protractor-layer');
+            const lunInc = smoothstep(0.05, 0.30, phase) * 15.0 * Math.PI / 180.0;
+
+            if (lunInc < 0.02) {
+                layer.style.opacity = '0';
+                return;
+            } else {
+                layer.style.opacity = '1';
+            }
+
+            const n1 = smoothstep(0.36, 0.63, phase) * (Math.PI / 2.0);
+            const n2 = (precessionYear / 18.6) * (2.0 * Math.PI);
+            const nodeA = n1 + n2;
+
+            const cosNode = Math.cos(nodeA), sinNode = Math.sin(nodeA);
+            const ePos = [22.0, 0.0, 0.0];
+
+            const get3D = (alpha, r, k) => {
+                let tx = k * r * Math.cos(alpha);
+                let ty = k * r * Math.sin(alpha);
+                return [
+                    cosNode * tx + ePos[0],
+                    ty + ePos[1],
+                    sinNode * tx + ePos[2]
+                ];
+            };
+
+            let pt1 = get3D(lunInc, 8.3, 1);
+            let p2d1 = project3Dto2D(...pt1);
+            let pt2 = get3D(lunInc, 8.3, -1);
+            let p2d2 = project3Dto2D(...pt2);
+
+            let k = 1;
+            if (p2d1 && p2d2) {
+                k = (p2d1.z < p2d2.z) ? 1 : -1;
+            } else if (p2d2) {
+                k = -1;
+            } else if (!p2d1) {
+                layer.style.opacity = '0';
+                return; 
+            }
+
+            const R_outer = 8.3; 
+            const R_ecl = 9.9;   
+            const R_arc = 3.5;   
+            const R_text = 4.8;  
+
+            let pC = project3Dto2D(...ePos);
+            let pE_outer = project3Dto2D(...get3D(0, R_ecl, k));
+            let pL_outer = project3Dto2D(...get3D(lunInc, R_outer, k));
+
+            if (!pC || !pE_outer || !pL_outer) {
+                layer.style.opacity = '0';
+                return;
+            }
+
+            let sectorPts = [`${pC.x},${pC.y}`];
+            for (let i = 0; i <= 10; i++) {
+                let a = (i / 10) * lunInc;
+                let p = project3Dto2D(...get3D(a, R_outer, k));
+                if (p) sectorPts.push(`${p.x},${p.y}`);
+            }
+            document.getElementById('core2-pro-sector').setAttribute('points', sectorPts.join(' '));
+
+            let eLine = document.getElementById('core2-pro-line-e');
+            eLine.setAttribute('x1', pC.x); eLine.setAttribute('y1', pC.y);
+            eLine.setAttribute('x2', pE_outer.x); eLine.setAttribute('y2', pE_outer.y);
+
+            let lLine = document.getElementById('core2-pro-line-l');
+            lLine.setAttribute('x1', pC.x); lLine.setAttribute('y1', pC.y);
+            lLine.setAttribute('x2', pL_outer.x); lLine.setAttribute('y2', pL_outer.y);
+
+            let pDrop = project3Dto2D(...get3D(0, R_outer * Math.cos(lunInc), k));
+            if (pDrop) {
+                let dropLine = document.getElementById('core2-pro-line-drop');
+                dropLine.setAttribute('x1', pL_outer.x); dropLine.setAttribute('y1', pL_outer.y);
+                dropLine.setAttribute('x2', pDrop.x); dropLine.setAttribute('y2', pDrop.y);
+
+                let dropDot = document.getElementById('core2-pro-drop-dot');
+                dropDot.setAttribute('cx', pDrop.x); dropDot.setAttribute('cy', pDrop.y);
+            }
+
+            let arcD = "";
+            let firstArc = true;
+            for (let i = 0; i <= 10; i++) {
+                let a = (i / 10) * lunInc;
+                let p = project3Dto2D(...get3D(a, R_arc, k));
+                if (p) {
+                    arcD += (firstArc ? `M ${p.x} ${p.y}` : ` L ${p.x} ${p.y}`);
+                    firstArc = false;
+                }
+            }
+            document.getElementById('core2-pro-arc-line').setAttribute('d', arcD);
+
+            let centerDot = document.getElementById('core2-pro-center-dot');
+            centerDot.setAttribute('cx', pC.x); centerDot.setAttribute('cy', pC.y);
+
+            let pText = project3Dto2D(...get3D(lunInc / 2, R_text, k));
+            if (pText) {
+                let textEl = document.getElementById('core2-pro-angle-text');
+                textEl.setAttribute('x', pText.x);
+                textEl.setAttribute('y', pText.y);
+                textEl.textContent = displayDeg.toFixed(2) + '°';
+            }
+        }
+
+        function updateTextArc(phase) {
+            const q = Math.max(0, Math.min(Math.floor((phase - 0.0001) * 4.0), 3));
+            const a_center = (q + 0.5) * Math.PI * 0.5;
+            const a_start = a_center - Math.PI * 0.7;
+            const a_end = a_center + Math.PI * 0.7;
+            
+            const lunSvgPath = document.getElementById('core2-invisible-arc');
+            const eclSvgPath = document.getElementById('core2-ecliptic-arc');
+            
+            // Dynamically recreate lunar text element (HTML-defined one is broken in integrated context)
+            var lunTextEl = document.getElementById('core2-lunar-text-dyn');
+            var lunTextPath;
+            if (!lunTextEl) {
+                lunTextEl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                lunTextEl.id = 'core2-lunar-text-dyn';
+                lunTextEl.classList.add('arc-text', 'lunar-text');
+                lunTextPath = document.createElementNS('http://www.w3.org/2000/svg', 'textPath');
+                lunTextPath.setAttribute('href', '#core2-invisible-arc');
+                lunTextPath.setAttribute('startOffset', '50%');
+                lunTextPath.setAttribute('text-anchor', 'middle');
+                lunTextEl.appendChild(lunTextPath);
+                document.getElementById('core2-text-svg-layer').appendChild(lunTextEl);
+                // Hide the broken HTML-defined lunar text element
+                var oldLun = document.getElementById('core2-text-path-el');
+                if (oldLun && oldLun.parentNode) oldLun.parentNode.style.display = 'none';
+            } else {
+                lunTextPath = lunTextEl.querySelector('textPath');
+            }
+            
+            lunTextPath.textContent = i18n[currentLang].arcLunar[q]; 
+
+            lunTextEl.setAttribute('fill', '#0d0214');
+            lunTextEl.setAttribute('stroke', '#ff4d6d'); 
+            lunTextEl.style.textShadow = '0 0 12px rgba(255, 77, 109, 0.8), 0 0 25px rgba(255, 77, 109, 0.6)';
+
+            const eclTextPath = document.getElementById('core2-ecliptic-text-path');
+            const eclTextEl = document.querySelector('.ecliptic-text');
+
+            eclTextPath.textContent = i18n[currentLang].arcEcliptic; 
+            eclTextEl.setAttribute('fill', '#0d0214');
+            eclTextEl.setAttribute('stroke', '#ffcc44'); 
+            eclTextEl.style.textShadow = '0 0 12px rgba(255, 204, 68, 0.8), 0 0 25px rgba(255, 200, 50, 0.6)';
+
+            const lunInc = smoothstep(0.05, 0.30, phase) * 15.0 * Math.PI / 180.0;
+            const n1 = smoothstep(0.36, 0.63, phase) * (Math.PI / 2.0);
+            const n2 = (precessionYear / 18.6) * (2.0 * Math.PI); 
+            const nodeA = n1 + n2;
+
+            const cosInc = Math.cos(lunInc), sinInc = Math.sin(lunInc);
+            const cosNode = Math.cos(nodeA), sinNode = Math.sin(nodeA);
+
+            let pointsLun = [];
+            let pointsEcl = [];
+            let centerIndexLun = -1;
+            let centerIndexEcl = -1;
+            const ePos = [22.0, 0.0, 0.0];
+            
+            const STEPS = 100;
+            const HALF_STEPS = 50; 
+            
+            for (let i = 0; i <= STEPS; i++) {
+                let a = a_start + (a_end - a_start) * (i / STEPS);
+                
+                let r_lun = 8.3; 
+                let lx = r_lun * Math.cos(a), ly = 0, lz = -r_lun * Math.sin(a); 
+                let tx = cosInc * lx - sinInc * ly;
+                let ty = sinInc * lx + cosInc * ly;
+                let tz = lz;
+
+                let wx = cosNode * tx - sinNode * tz + ePos[0];
+                let wy = ty + ePos[1];
+                let wz = sinNode * tx + cosNode * tz + ePos[2];
+                
+                let p2dLun = project3Dto2D(wx, wy, wz);
+                if (p2dLun) {
+                    pointsLun.push(p2dLun);
+                    if (i === HALF_STEPS) centerIndexLun = pointsLun.length - 1;
+                }
+            }
+
+            const a_start_ecl = 0.75; 
+            const a_end_ecl = -0.75;
+
+            for (let i = 0; i <= STEPS; i++) {
+                let a = a_start_ecl + (a_end_ecl - a_start_ecl) * (i / STEPS);
+                
+                let r_ecl = 10.2; 
+                let ex = ePos[0] + r_ecl * Math.cos(a); 
+                let ey = ePos[1] + 0.0;
+                let ez = ePos[2] - r_ecl * Math.sin(a); 
+
+                let p2dEcl = project3Dto2D(ex, ey, ez);
+                if (p2dEcl) {
+                    pointsEcl.push(p2dEcl);
+                    if (i === HALF_STEPS) centerIndexEcl = pointsEcl.length - 1;
+                }
+            }
+            
+            let lenLun = buildArcPath(pointsLun, centerIndexLun, lunSvgPath, lunTextPath, lunTextEl);
+            let lenEcl = buildArcPath(pointsEcl, centerIndexEcl, eclSvgPath, eclTextPath, eclTextEl);
+
+            const defaultCamDist = 22.0;
+            let scaleFactor = (defaultCamDist / camRadius) / currentZoom;
+            let baseFontSize = Math.max(6, 14.0 * scaleFactor);
+
+            if (lenLun > 0) {
+                let textStr = lunTextPath.textContent;
+                let charCount = textStr.length > 0 ? textStr.length : 20;
+                let dynamicFontSize = Math.max(3, Math.min(baseFontSize, (lenLun / charCount) * 1.3)); 
+                lunTextEl.style.fontSize = dynamicFontSize + 'px';
+                lunTextEl.style.letterSpacing = (dynamicFontSize * 0.15) + 'px';
+                lunTextEl.style.opacity = lenLun < 100 ? (lenLun / 100) : 1;
+            }
+            
+            if (lenEcl > 0) {
+                let textStr = eclTextPath.textContent;
+                let charCount = textStr.length > 0 ? textStr.length : 20;
+                let dynamicFontSize = Math.max(3, Math.min(baseFontSize, (lenEcl / charCount) * 1.3)); 
+                eclTextEl.style.fontSize = dynamicFontSize + 'px';
+                eclTextEl.style.letterSpacing = (dynamicFontSize * 0.15) + 'px';
+                eclTextEl.style.opacity = lenEcl < 100 ? (lenEcl / 100) : 1;
+            }
+        }
+
+        function render(now) {
+            let dt = (now - lastTime) / 1000.0;
+            if (dt > 0.1) dt = 0.1; 
+            lastTime = now;
+
+            if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
+                canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            }
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            let elapsed = (now - startTime) / 1000.0;
+            currentProgress += (targetProgress - currentProgress) * (4.0 * dt);
+            
+            let targetZoom = 1.0, targetOffsetX = 0.0, targetOffsetY = 0.0;
+            
+            currentZoom += (targetZoom - currentZoom) * (5.0 * dt);
+            currentOffsetX += (targetOffsetX - currentOffsetX) * (5.0 * dt);
+            currentOffsetY += (targetOffsetY - currentOffsetY) * (5.0 * dt);
+
+            if (targetProgress > 0.9 && currentProgress > 0.8) {
+                precessionYear += 2.0 * dt; 
+                if (precessionYear > 18.6) precessionYear -= 18.6; 
+            } else {
+                precessionYear *= Math.exp(-8.0 * dt); 
+            }
+
+            let stateIdx = 0;
+            if (currentProgress >= 0.15 && currentProgress < 0.5) stateIdx = 1;
+            else if (currentProgress >= 0.5 && currentProgress < 0.85) stateIdx = 2;
+            else if (currentProgress >= 0.85) stateIdx = 3;
+            
+            if (percText) percText.innerHTML = i18n[currentLang].stateNames[stateIdx];
+            
+            updateTextArc(currentProgress);
+            let fluctuation = 0.155 * Math.cos(elapsed * 2.0); 
+            let curLunDeg = smoothstep(0.05, 0.30, currentProgress) * (5.145 + fluctuation);
+            
+            if (valLunEl) valLunEl.innerText = curLunDeg.toFixed(2) + '°';
+
+            if (valNodeEl) {
+                if (currentProgress > 0.8) {
+                    let driftDays = precessionYear * 19.35; 
+                    valNodeEl.innerText = `${precessionYear.toFixed(1)} YRS (-${Math.floor(driftDays)}${i18n[currentLang].days})`;
+                } else {
+                    let n1 = smoothstep(0.36, 0.63, currentProgress) * 90.0;
+                    valNodeEl.innerText = n1.toFixed(1) + i18n[currentLang].aligned;
+                }
+            }
+            
+            const baseFontSize = 14.0;
+            const defaultCamDist = 22.0;
+            let scaleFactor = (defaultCamDist / camRadius) / currentZoom;
+            let dynamicFontSize = Math.max(6, baseFontSize * scaleFactor);
+            
+            document.getElementById('core2-pro-angle-text').style.fontSize = dynamicFontSize + 'px';
+
+            updateTextArc(currentProgress);
+            updateProtractor(currentProgress, curLunDeg);
+
+            gl.uniform3f(locRes, gl.canvas.width, gl.canvas.height, 1.0);
+            gl.uniform3f(locCam, camTheta, camPhi, camRadius);
+            
+            let safeShaderProgress = currentProgress > 0.0 ? Math.max(0.0, currentProgress - 0.0001) : 0.0;
+
+            gl.uniform1f(locProgress, safeShaderProgress); 
+            gl.uniform1f(locTime, elapsed);
+            gl.uniform2f(locOffset, currentOffsetX, currentOffsetY);
+            gl.uniform1f(locZoom, currentZoom);
+            gl.uniform1f(locPrecessionYear, precessionYear);
+
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            requestAnimationFrame(render);
+        }
+
+        // 直接初始化中文，不再调用 toggleLanguage() 反转
+        updateLanguageUI();
+        requestAnimationFrame(render);
+  };
+})();
